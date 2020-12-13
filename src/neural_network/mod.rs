@@ -1,2 +1,2 @@
 pub mod neuron;
-pub mod neural_layer;
+pub mod layer;
