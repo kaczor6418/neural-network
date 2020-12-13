@@ -5,7 +5,15 @@ struct NeuralLayer {
 }
 
 impl NeuralLayer {
+    pub fn new(neurons: Option<Vec<Neuron>>) -> NeuralLayer {
+        return NeuralLayer {
+            neurons: neurons.unwrap_or(vec![])
+        };
+    }
 
+    pub fn add_neuron(&mut self, neuron: Neuron) {
+        self.neurons.push(neuron);
+    }
 }
 
 #[cfg(test)]
