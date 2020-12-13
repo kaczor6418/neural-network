@@ -1,6 +1,6 @@
 use crate::neural_network::neuron::Neuron;
 
-struct Layer {
+pub struct Layer {
     neurons: Vec<Neuron>,
     activation_callback: fn(value: f64) -> f64,
 }
