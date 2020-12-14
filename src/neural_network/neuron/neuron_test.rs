@@ -20,27 +20,25 @@ mod new {
     }
 }
 
-// mod update_weight_value {
-//     use crate::neural_network::neuron::Neuron;
-//
-//     #[test]
-//     fn should_update_weight_value_if_weight_exists() {
-//         let mut neuron = Neuron::new(&1, &0.0, &1.0).unwrap();
-//         let index = 0;
-//         let value = 1.1;
-//         neuron.update_weight_value(index, value);
-//         assert_eq!(neuron.weights[index], value);
-//     }
-//
-//     #[test]
-//     #[should_panic]
-//     fn should_not_update_weight_value_if_weight_dose_not_exists() {
-//         let weights = vec![1.0];
-//         let neron_size = weights.len();
-//         let mut neuron = Neuron::new(weights).unwrap();
-//         neuron.update_weight_value(neron_size, 2.1);
-//     }
-// }
+mod update_weight_value {
+    use crate::neural_network::neuron::Neuron;
+
+    #[test]
+    fn should_update_weight_value_if_weight_exists() {
+        let mut neuron = Neuron::new(&1, &0.0, &1.0).unwrap();
+        let index = 0;
+        let value = 1.1;
+        neuron.update_weight_value(index, value);
+        assert_eq!(neuron.weights[index], value);
+    }
+
+    #[test]
+    #[should_panic]
+    fn should_not_update_weight_value_if_weight_dose_not_exists() {
+        let mut neuron = Neuron::new(&1, &0.0, &1.0).unwrap();
+        neuron.update_weight_value(1, 2.1);
+    }
+}
 //
 // mod update_input_value {
 //     use crate::neural_network::neuron::Neuron;
