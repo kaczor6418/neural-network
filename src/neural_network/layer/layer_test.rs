@@ -8,29 +8,25 @@ mod new {
         assert_eq!(empty_layer.neurons.len(), 0);
     }
 }
-//
-// mod add_neuron {
-//     use crate::neural_network::layer::Layer;
-//     use crate::neural_network::neuron::Neuron;
-//
-//     #[test]
-//     fn should_add_neuron_to_empty_layer() {
-//         let weights = vec![0.0, 1.0, 2.0];
-//         let mut empty_layer = Layer::new(None, None);
-//         empty_layer.add_neuron(Neuron::new(weights).unwrap());
-//         assert_eq!(empty_layer.neurons.len(), 1);
-//     }
-//
-//     #[test]
-//     fn should_add_neuron_to_layer_with_neurons() {
-//         let weights1 = vec![0.0, 1.0, 2.0];
-//         let weights2 = vec![0.1, 1.2, 2.3];
-//         let neurons = vec![Neuron::new(weights1).unwrap()];
-//         let mut layer = Layer::new(Some(neurons), None);
-//         layer.add_neuron(Neuron::new(weights2).unwrap());
-//         assert_eq!(layer.neurons.len(), 2);
-//     }
-// }
+
+mod add_neurons {
+    use crate::neural_network::layer::Layer;
+    use crate::neural_network::neuron::Neuron;
+
+    #[test]
+    fn should_add_one_neuron_to_empty_layer() {
+        let mut layer = Layer::new(None);
+        layer.add_neurons(&1, &3, &0.0, &1.0);
+        assert_eq!(layer.neurons.len(), 1);
+    }
+
+    #[test]
+    fn should_add_ten_neurons_to_layer_with_neurons() {
+        let mut layer = Layer::new(None);
+        layer.add_neurons(&10, &3, &0.0, &1.0);
+        assert_eq!(layer.neurons.len(), 10);
+    }
+}
 //
 // mod get_outputs {
 //     use crate::neural_network::layer::Layer;
