@@ -8,6 +8,24 @@ mod new {
     }
 }
 
+mod size {
+    use crate::neural_network::layer::Layer;
+
+    #[test]
+    fn should_have_size_one_for_layer_with_one_neuron() {
+        let mut layer = Layer::new(&None);
+        layer.add_neurons(&1, &3, &0.0, &1.0);
+        assert_eq!(layer.size(), 1);
+    }
+
+    #[test]
+    fn should_have_size_ten_for_layer_with_ten_neurons() {
+        let mut layer = Layer::new(&None);
+        layer.add_neurons(&10, &3, &0.0, &1.0);
+        assert_eq!(layer.size(), 10);
+    }
+}
+
 mod add_neurons {
     use crate::neural_network::layer::Layer;
 

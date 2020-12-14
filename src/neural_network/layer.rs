@@ -13,6 +13,10 @@ impl Layer {
         };
     }
 
+    pub fn size(&self) -> usize {
+        return self.neurons.len();
+    }
+
     pub fn add_neurons(&mut self, neurons_count: &usize, inputs_count: &usize, min_weight: &f64, max_weight: &f64) {
         let mut i = 0;
         while &i < neurons_count {
