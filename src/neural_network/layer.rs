@@ -6,7 +6,7 @@ pub struct Layer {
 }
 
 impl Layer {
-    pub fn new(activation_callback: Option<fn(value: f64) -> f64>) -> Layer {
+    pub fn new(activation_callback: &Option<fn(value: f64) -> f64>) -> Layer {
         return Layer {
             neurons: vec![],
             activation_callback: activation_callback.unwrap_or(|value: f64| value),
@@ -21,7 +21,7 @@ impl Layer {
         }
     }
 
-    pub fn get_outputs(&self, inputs: Vec<f64>) -> Vec<f64> {
+    pub fn calculate_outputs(&self, inputs: Vec<f64>) -> Vec<f64> {
         return self.neurons.iter().map(|neuron| (self.activation_callback)(neuron.calculate_output_value(&inputs))).collect();
     }
 }
