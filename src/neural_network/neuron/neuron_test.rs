@@ -51,44 +51,27 @@ mod set_weights_values {
         assert_eq!(neuron.weights, new_weights);
     }
 }
-//
-// mod calculate_output_value {
-//     use crate::neural_network::neuron::Neuron;
-//
-//     #[test]
-//     fn should_calculate_value() {
-//         let inputs = vec![1.0, 2.0];
-//         let weights = vec![1.0, 2.0];
-//         let expected_output_value = inputs[0] * weights[0] + inputs[1] * weights[1];
-//         let mut neuron = Neuron::new(weights).unwrap();
-//         neuron.set_inputs_values(inputs);
-//         let output_value = neuron.calculate_output_value();
-//         assert_eq!(output_value, expected_output_value);
-//     }
-//
-//     #[test]
-//     fn should_calculate_value_for_changed_weight() {
-//         let inputs = vec![1.0, 2.0];
-//         let weights = vec![1.0, 2.0];
-//         let value = 2.0;
-//         let expected_output_value = inputs[0] * value + inputs[1] * weights[1];
-//         let mut neuron = Neuron::new(weights).unwrap();
-//         neuron.set_inputs_values(inputs);
-//         neuron.update_weight_value(0, value);
-//         let output_value = neuron.calculate_output_value();
-//         assert_eq!(output_value, expected_output_value);
-//     }
-//
-//     #[test]
-//     fn should_calculate_value_for_changed_input() {
-//         let inputs = vec![1.0, 2.0];
-//         let weights = vec![1.0, 2.0];
-//         let value = 2.0;
-//         let expected_output_value = inputs[0] * value + inputs[1] * weights[1];
-//         let mut neuron = Neuron::new(weights).unwrap();
-//         neuron.set_inputs_values(inputs);
-//         neuron.update_input_value(0, value);
-//         let output_value = neuron.calculate_output_value();
-//         assert_eq!(output_value, expected_output_value);
-//     }
-// }
+
+mod calculate_output_value {
+    use crate::neural_network::neuron::Neuron;
+
+    #[test]
+    fn should_calculate_value() {
+        let inputs = vec![1.0, 2.0];
+        let neuron = Neuron::new(&2, &0.0, &1.0).unwrap();
+        let expected_output_value = inputs[0] * neuron.weights[0] + inputs[1] * neuron.weights[1];
+        let output_value = neuron.calculate_output_value(inputs);
+        assert_eq!(output_value, expected_output_value);
+    }
+
+    #[test]
+    fn should_calculate_value_for_changed_weight() {
+        let inputs = vec![1.0, 2.0];
+        let value = 2.0;
+        let mut neuron = Neuron::new(&2, &0.0, &1.0).unwrap();
+        neuron.update_weight_value(0, value);
+        let expected_output_value = inputs[0] * neuron.weights[0] + inputs[1] * neuron.weights[1];
+        let output_value = neuron.calculate_output_value(inputs);
+        assert_eq!(output_value, expected_output_value);
+    }
+}
