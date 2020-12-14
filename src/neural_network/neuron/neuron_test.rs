@@ -39,55 +39,18 @@ mod update_weight_value {
         neuron.update_weight_value(1, 2.1);
     }
 }
-//
-// mod update_input_value {
-//     use crate::neural_network::neuron::Neuron;
-//
-//     #[test]
-//     fn should_update_input_value_if_weight_exists() {
-//         let weights = vec![1.0];
-//         let mut neuron = Neuron::new(weights).unwrap();
-//         let index = 0;
-//         let value = 1.1;
-//         neuron.update_input_value(index, value);
-//         assert_eq!(neuron.inputs[index], value);
-//     }
-//
-//     #[test]
-//     #[should_panic]
-//     fn should_not_update_input_value_if_weight_dose_not_exists() {
-//         let weights = vec![1.0];
-//         let neron_size = weights.len();
-//         let mut neuron = Neuron::new(weights).unwrap();
-//         neuron.update_input_value(neron_size, 2.1);
-//     }
-// }
-//
-// mod set_inputs_values {
-//     use crate::neural_network::neuron::Neuron;
-//
-//     #[test]
-//     fn should_set_inputs_values() {
-//         let weights = vec![1.0, 2.0];
-//         let inputs = vec![3.0, 4.0];
-//         let mut neuron = Neuron::new(weights).unwrap();
-//         neuron.set_inputs_values(inputs.clone());
-//         assert_eq!(neuron.inputs, inputs);
-//     }
-// }
-//
-// mod set_weights_values {
-//     use crate::neural_network::neuron::Neuron;
-//
-//     #[test]
-//     fn should_set_inputs_values() {
-//         let weights = vec![1.0, 2.0];
-//         let new_weights = vec![3.0, 4.0];
-//         let mut neuron = Neuron::new(weights).unwrap();
-//         neuron.set_weights_values(new_weights.clone());
-//         assert_eq!(neuron.weights, new_weights);
-//     }
-// }
+
+mod set_weights_values {
+    use crate::neural_network::neuron::Neuron;
+
+    #[test]
+    fn should_set_inputs_values() {
+        let new_weights = vec![3.0];
+        let mut neuron = Neuron::new(&1, &0.0, &1.0).unwrap();
+        neuron.set_weights_values(new_weights.clone());
+        assert_eq!(neuron.weights, new_weights);
+    }
+}
 //
 // mod calculate_output_value {
 //     use crate::neural_network::neuron::Neuron;
