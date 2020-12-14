@@ -18,6 +18,15 @@ mod new {
         let neuron = Neuron::new(&weights_count, &min_weight, &max_weight);
         assert!(neuron.is_err());
     }
+
+    #[test]
+    fn should_create_neuron_with_three_weights() {
+        let weights_count: usize = 3;
+        let min_weight = 0.0;
+        let max_weight = 1.0;
+        let neuron = Neuron::new(&weights_count, &min_weight, &max_weight).unwrap();
+        assert_eq!(neuron.weights.len(), weights_count);
+    }
 }
 
 mod update_weight_value {
@@ -60,7 +69,7 @@ mod calculate_output_value {
         let inputs = vec![1.0, 2.0];
         let neuron = Neuron::new(&2, &0.0, &1.0).unwrap();
         let expected_output_value = inputs[0] * neuron.weights[0] + inputs[1] * neuron.weights[1];
-        let output_value = neuron.calculate_output_value(inputs);
+        let output_value = neuron.calculate_output_value(&inputs);
         assert_eq!(output_value, expected_output_value);
     }
 
@@ -71,7 +80,7 @@ mod calculate_output_value {
         let mut neuron = Neuron::new(&2, &0.0, &1.0).unwrap();
         neuron.update_weight_value(0, value);
         let expected_output_value = inputs[0] * neuron.weights[0] + inputs[1] * neuron.weights[1];
-        let output_value = neuron.calculate_output_value(inputs);
+        let output_value = neuron.calculate_output_value(&inputs);
         assert_eq!(output_value, expected_output_value);
     }
 }

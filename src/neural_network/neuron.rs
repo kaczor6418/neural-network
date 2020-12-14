@@ -21,7 +21,7 @@ impl Neuron {
 
     fn generate_random_weights(weights_count: &usize, min_weight: &f64, max_weight: &f64) -> Vec<f64> {
         let mut i = 0;
-        let mut weights: Vec<f64> =  vec![0.0];
+        let mut weights: Vec<f64> =  vec![];
         while &i < weights_count {
             weights.push(rand::thread_rng().gen_range(min_weight, max_weight));
             i += 1;
@@ -37,7 +37,7 @@ impl Neuron {
         self.weights = weights;
     }
 
-    pub fn calculate_output_value(&self, inputs: Vec<f64>) -> f64 {
+    pub fn calculate_output_value(&self, inputs: &Vec<f64>) -> f64 {
         let mut weights_iterator = self.weights.iter();
         return inputs.iter().map(|input| input * weights_iterator.next().unwrap()).sum();
     }
