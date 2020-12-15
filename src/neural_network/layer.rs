@@ -2,14 +2,16 @@ use crate::neural_network::neuron::Neuron;
 
 pub struct Layer {
     neurons: Vec<Neuron>,
-    activation_callback: fn(value: f64) -> f64,
+    activation_function: fn(value: f64) -> f64,
+    activation_function_derivative: fn(value: f64) -> f64,
 }
 
 impl Layer {
     pub fn new(activation_callback: &Option<fn(value: f64) -> f64>) -> Layer {
         return Layer {
             neurons: vec![],
-            activation_callback: activation_callback.unwrap_or(|value: f64| value),
+            activation_function: activation_callback.unwrap_or(|value: f64| value),
+            activation_function_derivative: activation_callback.unwrap_or(|value: f64| 1.0),
         };
     }
 
@@ -26,7 +28,7 @@ impl Layer {
     }
 
     pub fn calculate_outputs(&mut self, inputs: Vec<f64>) -> Vec<f64> {
-        let activation_callback = &mut self.activation_callback; // ugly workaround to borrow checker complaining when writing these inline
+        let activation_callback = &mut self.activation_function; // ugly workaround to borrow checker complaining when writing these inline
         return self.neurons.iter_mut().map(|neuron| (activation_callback)(neuron.calculate_output_value(&inputs))).collect();
     }
 }

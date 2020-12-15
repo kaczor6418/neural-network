@@ -8,6 +8,7 @@ fn valid_config_with_one_layer() -> NetworkConfig {
             LayerConfig {
                 neurons_count: 2,
                 activation_callback: None,
+                activation_function_derivative: None
             }
         ],
         learning_rate: 0.01,
@@ -24,14 +25,17 @@ fn valid_config_with_three_layers() -> NetworkConfig {
             LayerConfig {
                 neurons_count: 4,
                 activation_callback: None,
+                activation_function_derivative: None,
             },
             LayerConfig {
                 neurons_count: 3,
                 activation_callback: None,
+                activation_function_derivative: None
             },
             LayerConfig {
                 neurons_count: 5,
                 activation_callback: None,
+                activation_function_derivative: None
             },
         ],
         learning_rate: 0.01,

@@ -9,6 +9,7 @@ pub struct NetworkConfig {
 
 pub struct LayerConfig {
     pub activation_callback: Option<fn(value: f64) -> f64>,
+    pub activation_function_derivative: Option<fn(value: f64) -> f64>,
     pub neurons_count: usize
 }
 
