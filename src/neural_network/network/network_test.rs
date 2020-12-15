@@ -63,13 +63,13 @@ mod forward_propagation {
 
     #[test]
     fn should_contains_output_with_two_values() {
-        let network = Network::new(valid_config_with_one_layer());
+        let mut network = Network::new(valid_config_with_one_layer());
         assert_eq!(network.forward_propagation().len(), 2);
     }
 
     #[test]
     fn should_contains_output_with_five_values() {
-        let network = Network::new(valid_config_with_three_layers());
+        let mut network = Network::new(valid_config_with_three_layers());
         assert_eq!(network.forward_propagation().len(), 5);
     }
 }

@@ -1,27 +1,21 @@
 use rand::Rng;
 
 pub struct Neuron {
-    weights: Vec<f64>
+    weights: Vec<f64>,
+    value: f64,
 }
 
 impl Neuron {
-    pub fn new(weights_count: &usize, min_weight: &f64, max_weight: &f64) -> Result<Neuron, String> {
-        if Neuron::is_min_weight_less_then_max_weight(&min_weight, &max_weight) == false {
-            return Err(format!("Min weight has to be smaller then max weight.\n Min weight: {}, Max weight: {}", min_weight, max_weight));
-        }
-        let weights = Neuron::generate_random_weights(&weights_count, &min_weight, &max_weight);
-        return Ok(Neuron {
-            weights
-        });
-    }
-
-    fn is_min_weight_less_then_max_weight(min_weight: &f64, max_weight: &f64) -> bool {
-        return min_weight < max_weight;
+    pub fn new(weights_count: &usize, min_weight: &f64, max_weight: &f64) -> Neuron {
+        return Neuron {
+            weights: Neuron::generate_random_weights(&weights_count, &min_weight, &max_weight),
+            value: 0.0,
+        };
     }
 
     fn generate_random_weights(weights_count: &usize, min_weight: &f64, max_weight: &f64) -> Vec<f64> {
         let mut i = 0;
-        let mut weights: Vec<f64> =  vec![];
+        let mut weights: Vec<f64> = vec![];
         while &i < weights_count {
             weights.push(rand::thread_rng().gen_range(min_weight, max_weight));
             i += 1;
@@ -37,9 +31,10 @@ impl Neuron {
         self.weights = weights;
     }
 
-    pub fn calculate_output_value(&self, inputs: &Vec<f64>) -> f64 {
+    pub fn calculate_output_value(&mut self, inputs: &Vec<f64>) -> f64 {
         let mut weights_iterator = self.weights.iter();
-        return inputs.iter().map(|input| input * weights_iterator.next().unwrap()).sum();
+        self.value = inputs.iter().map(|input| input * weights_iterator.next().unwrap()).sum();
+        return self.value;
     }
 }
 

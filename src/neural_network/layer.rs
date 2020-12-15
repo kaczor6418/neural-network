@@ -20,13 +20,14 @@ impl Layer {
     pub fn add_neurons(&mut self, neurons_count: &usize, inputs_count: &usize, min_weight: &f64, max_weight: &f64) {
         let mut i = 0;
         while &i < neurons_count {
-            self.neurons.push(Neuron::new(inputs_count, min_weight, max_weight).unwrap());
+            self.neurons.push(Neuron::new(inputs_count, min_weight, max_weight));
             i += 1;
         }
     }
 
-    pub fn calculate_outputs(&self, inputs: Vec<f64>) -> Vec<f64> {
-        return self.neurons.iter().map(|neuron| (self.activation_callback)(neuron.calculate_output_value(&inputs))).collect();
+    pub fn calculate_outputs(&mut self, inputs: Vec<f64>) -> Vec<f64> {
+        let activation_callback = &mut self.activation_callback; // ugly workaround to borrow checker complaining when writing these inline
+        return self.neurons.iter_mut().map(|neuron| (activation_callback)(neuron.calculate_output_value(&inputs))).collect();
     }
 }
 
