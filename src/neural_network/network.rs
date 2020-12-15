@@ -25,6 +25,10 @@ impl Network {
             return layer;
         }).collect();
     }
+
+    pub fn forward_propagation(&self) -> Vec<f64> {
+        return self.layers.iter().fold(self.inputs.clone(), |output, layer| layer.calculate_outputs(output));
+    }
 }
 
 
