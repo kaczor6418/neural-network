@@ -4,15 +4,21 @@ use crate::neural_network::network::network_config::NetworkConfig;
 pub mod network_config;
 
 pub struct Network {
-    layers: Vec<Layer>,
+    expected_output: Vec<f64>,
     inputs: Vec<f64>,
+    layers: Vec<Layer>,
+    learning_rate: f64,
+    loss_function: fn(expected: f64, predicted: f64) -> f64,
 }
 
 impl Network {
     pub fn new(config: NetworkConfig) -> Network {
         return Network {
             layers: Network::generate_layers(&config),
+            expected_output: config.expected_output,
             inputs: config.inputs,
+            learning_rate: config.learning_rate,
+            loss_function: config.loose_function.unwrap_or(|expected: f64, predicted: f64| (predicted - expected).powi(2)),
         };
     }
 
@@ -26,7 +32,7 @@ impl Network {
         }).collect();
     }
 
-    pub fn forward_propagation(&self) -> Vec<f64> {
+    fn forward_propagation(&self) -> Vec<f64> {
         return self.layers.iter().fold(self.inputs.clone(), |output, layer| layer.calculate_outputs(output));
     }
 }

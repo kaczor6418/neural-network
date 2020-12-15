@@ -2,35 +2,41 @@ use crate::neural_network::network::network_config::{NetworkConfig, WeightsRange
 
 fn valid_config_with_one_layer() -> NetworkConfig {
     return NetworkConfig {
-        weights_range: WeightsRange { min_weight: 0.0, max_weight: 1.0},
+        expected_output: vec![1.0, 2.0],
         inputs: vec![1.0, 2.0, 3.0],
         layers: vec![
             LayerConfig {
                 neurons_count: 2,
-                activation_callback: None
+                activation_callback: None,
             }
-        ]
+        ],
+        learning_rate: 0.01,
+        loose_function: None,
+        weights_range: WeightsRange { min_weight: 0.0, max_weight: 1.0 },
     };
 }
 
 fn valid_config_with_three_layers() -> NetworkConfig {
     return NetworkConfig {
-        weights_range: WeightsRange { min_weight: 0.0, max_weight: 1.0},
+        expected_output: vec![1.0, 2.0, 3.0, 4.0, 5.0],
         inputs: vec![1.0, 2.0, 3.0],
         layers: vec![
             LayerConfig {
                 neurons_count: 4,
-                activation_callback: None
+                activation_callback: None,
             },
             LayerConfig {
                 neurons_count: 3,
-                activation_callback: None
+                activation_callback: None,
             },
             LayerConfig {
                 neurons_count: 5,
-                activation_callback: None
+                activation_callback: None,
             },
-        ]
+        ],
+        learning_rate: 0.01,
+        loose_function: None,
+        weights_range: WeightsRange { min_weight: 0.0, max_weight: 1.0 },
     };
 }
 
