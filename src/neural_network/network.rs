@@ -1,27 +1,30 @@
 use crate::neural_network::layer::Layer;
+use crate::neural_network::network::network_config::NetworkConfig;
 
-pub mod config;
+pub mod network_config;
 
 pub struct Network {
     layers: Vec<Layer>,
-    inputs: Vec<f64>
+    inputs: Vec<f64>,
 }
 
 impl Network {
-    pub fn new(layers: Option<Vec<Layer>>) -> Network {
+    pub fn new(config: NetworkConfig) -> Network {
         return Network {
-            layers: layers.unwrap_or(vec![]),
-            inputs: vec![]
+            layers: Network::generate_layers(&config),
+            inputs: config.inputs,
         };
     }
 
-    // pub fn configure_network(&mut self, config: Config) {
-    //     self.inputs = config.inputs;
-    //     config.layers.iter().for_each(|layer| {
-    //         let neural_layer = Layer::new(None)
-    //     })
-    // }
-
+    fn generate_layers(config: &NetworkConfig) -> Vec<Layer> {
+        let mut inputs_count = config.inputs.len();
+        return config.layers.iter().map(|layer_cfg| {
+            let mut layer = Layer::new(&layer_cfg.activation_callback);
+            layer.add_neurons(&layer_cfg.neurons_count, &inputs_count, &config.weights_range.min_weight, &config.weights_range.max_weight);
+            inputs_count = layer.size();
+            return layer;
+        }).collect();
+    }
 }
 
 

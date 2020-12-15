@@ -1,86 +1,52 @@
-use crate::neural_network::network::config::{Config, LayerConfig, LayerConfigWithNeuronsCount, BaseLayerConfig, LayerConfigWithNeuronsWeights};
+use crate::neural_network::network::network_config::{NetworkConfig, WeightsRange, LayerConfig};
 
-fn valid_config_with_three_layers() -> Config {
-    return Config {
+fn valid_config_with_one_layer() -> NetworkConfig {
+    return NetworkConfig {
+        weights_range: WeightsRange { min_weight: 0.0, max_weight: 1.0},
         inputs: vec![1.0, 2.0, 3.0],
         layers: vec![
             LayerConfig {
-                layer_config_with_neurons_count: LayerConfigWithNeuronsCount {
-                    base_data: BaseLayerConfig { activation_callback: None },
-                    neurons_count: 12,
-                }
-            },
-            LayerConfig {
-                layer_config_with_neurons_count: LayerConfigWithNeuronsCount {
-                    base_data: BaseLayerConfig { activation_callback: None },
-                    neurons_count: 10,
-                }
+                neurons_count: 2,
+                activation_callback: None
             }
-        ],
+        ]
     };
 }
 
-fn invalid_config() -> Config {
-    return Config {
+fn valid_config_with_three_layers() -> NetworkConfig {
+    return NetworkConfig {
+        weights_range: WeightsRange { min_weight: 0.0, max_weight: 1.0},
         inputs: vec![1.0, 2.0, 3.0],
         layers: vec![
             LayerConfig {
-                layer_config_with_neurons_weights: LayerConfigWithNeuronsWeights {
-                    base_data: BaseLayerConfig { activation_callback: None },
-                    neurons_weights: vec![
-                        vec![1.0],
-                        vec![2.0, 3.0],
-                        vec![3.0, 5.0, 6.0],
-                    ],
-                }
+                neurons_count: 2,
+                activation_callback: None
             },
             LayerConfig {
-                layer_config_with_neurons_weights: LayerConfigWithNeuronsWeights {
-                    base_data: BaseLayerConfig { activation_callback: None },
-                    neurons_weights: vec![
-                        vec![1.0, 2.0, 3.0],
-                        vec![2.0, 3.0],
-                        vec![3.0],
-                    ],
-                }
-            }
-        ],
+                neurons_count: 3,
+                activation_callback: None
+            },
+            LayerConfig {
+                neurons_count: 4,
+                activation_callback: None
+            },
+        ]
     };
 }
 
 mod new {
     use crate::neural_network::network::Network;
-    use crate::neural_network::layer::Layer;
+    use crate::neural_network::network::network_test::{valid_config_with_three_layers, valid_config_with_one_layer};
 
     #[test]
-    fn should_create_empty_network() {
-        let network = Network::new(None);
-        assert!(network.layers.is_empty());
+    fn should_create_network_with_one_layers() {
+        let network = Network::new(valid_config_with_one_layer());
+        assert_eq!(network.layers.len(), 1)
     }
 
     #[test]
-    fn should_create_network_with_two_layers() {
-        let layers = vec![Layer::new(None, None)];
-        let network = Network::new(Some(layers));
-        assert!(!network.layers.is_empty())
+    fn should_create_network_with_three_layers() {
+        let network = Network::new(valid_config_with_three_layers());
+        assert_eq!(network.layers.len(), 3)
     }
 }
-
-// mod configure_network {
-//     use crate::neural_network::network::Network;
-//     use crate::neural_network::network::network_test::{valid_config_with_three_layers, invalid_config};
-//
-//     #[test]
-//     fn should_configure_network_for_valid_config() {
-//         let network = Network::new(None);
-//         network.configure_network(valid_config_with_three_layers());
-//         assert_eq!(network.layers, 3)
-//     }
-//
-//     #[test]
-//     #[should_panic]
-//     fn should_not_configure_network_for_invalid_config() {
-//         let network = Network::new(None);
-//         network.configure_network(invalid_config());
-//     }
-// }
