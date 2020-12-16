@@ -18,7 +18,9 @@ impl Network {
             expected_output: config.expected_output,
             inputs: config.inputs,
             learning_rate: config.learning_rate,
-            loss_function: config.loose_function.unwrap_or(|expected: &f64, predicted: &f64| (predicted - expected).powi(2)),
+            loss_function: config
+                .loose_function
+                .unwrap_or(|expected: &f64, predicted: &f64| (predicted - expected).powi(2)),
         };
     }
 
@@ -29,19 +31,31 @@ impl Network {
 
     fn generate_layers(config: &NetworkConfig) -> Vec<Layer> {
         let mut inputs_count = config.inputs.len();
-        return config.layers.iter().map(|layer_cfg| {
-            let mut layer = Layer::new(&layer_cfg.activation_callback, &layer_cfg.activation_function_derivative);
-            layer.add_neurons(&layer_cfg.neurons_count, &inputs_count, &config.weights_range.min_weight, &config.weights_range.max_weight);
-            inputs_count = layer.size();
-            return layer;
-        }).collect();
+        return config
+            .layers
+            .iter()
+            .map(|layer_cfg| {
+                let mut layer = Layer::new(
+                    &layer_cfg.activation_callback,
+                    &layer_cfg.activation_function_derivative,
+                );
+                layer.add_neurons(
+                    &layer_cfg.neurons_count,
+                    &inputs_count,
+                    &config.weights_range.min_weight,
+                    &config.weights_range.max_weight,
+                );
+                inputs_count = layer.size();
+                return layer;
+            })
+            .collect();
     }
 
     fn forward_propagation(&mut self) {
         let mut inputs = &self.inputs.clone();
-        self.layers.iter_mut().for_each(|layer| {
-            inputs = layer.calculate_outputs(inputs)
-        });
+        self.layers
+            .iter_mut()
+            .for_each(|layer| inputs = layer.calculate_outputs(inputs));
     }
 
     fn back_propagation(&mut self) {
@@ -55,7 +69,6 @@ impl Network {
         })
     }
 }
-
 
 #[cfg(test)]
 mod network_test;

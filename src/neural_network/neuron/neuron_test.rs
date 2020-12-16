@@ -65,7 +65,10 @@ mod calculate_new_weight {
         let learning_rate = 0.01;
         let loss_value = 12.0;
         let expected_new_value = neuron.weights[index] - learning_rate * loss_value;
-        assert_eq!(neuron.calculate_new_weight(index, &learning_rate, &loss_value), expected_new_value);
+        assert_eq!(
+            neuron.calculate_new_weight(index, &learning_rate, &loss_value),
+            expected_new_value
+        );
     }
 
     #[test]
