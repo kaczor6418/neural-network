@@ -2,14 +2,12 @@ use rand::Rng;
 
 pub struct Neuron {
     weights: Vec<f64>,
-    value: f64,
 }
 
 impl Neuron {
     pub fn new(weights_count: &usize, min_weight: &f64, max_weight: &f64) -> Neuron {
         return Neuron {
-            weights: Neuron::generate_random_weights(&weights_count, &min_weight, &max_weight),
-            value: 0.0,
+            weights: Neuron::generate_random_weights(&weights_count, &min_weight, &max_weight)
         };
     }
 
@@ -23,18 +21,21 @@ impl Neuron {
         return weights;
     }
 
-    pub fn update_weight_value(&mut self, index: usize, value: f64) {
+    pub fn update_weight(&mut self, index: usize, learning_rate: &f64, loss_value: &f64) {
+        self.set_weight(index, self.calculate_new_weight(index, learning_rate, loss_value));
+    }
+
+    pub fn calculate_output_value(&self, inputs: &Vec<f64>) -> f64 {
+        let mut weights_iterator = self.weights.iter();
+        return inputs.iter().map(|input| input * weights_iterator.next().unwrap()).sum();
+    }
+
+    fn set_weight(&mut self, index: usize, value: f64) {
         self.weights[index] = value;
     }
 
-    pub fn set_weights_values(&mut self, weights: Vec<f64>) {
-        self.weights = weights;
-    }
-
-    pub fn calculate_output_value(&mut self, inputs: &Vec<f64>) -> f64 {
-        let mut weights_iterator = self.weights.iter();
-        self.value = inputs.iter().map(|input| input * weights_iterator.next().unwrap()).sum();
-        return self.value;
+    fn calculate_new_weight(&self, index: usize, learning_rate: &f64, loss_value: &f64) -> f64 {
+        return self.weights[index] - learning_rate * loss_value;
     }
 }
 
