@@ -37,7 +37,7 @@ mod calculate_output_value {
     #[test]
     fn should_calculate_value() {
         let inputs = vec![1.0, 2.0];
-        let mut neuron = Neuron::new(&2, &0.0, &1.0);
+        let neuron = Neuron::new(&2, &0.0, &1.0);
         let expected_output_value = inputs[0] * neuron.weights[0] + inputs[1] * neuron.weights[1];
         let output_value = neuron.calculate_output_value(&inputs);
         assert_eq!(output_value, expected_output_value);
@@ -60,7 +60,7 @@ mod calculate_new_weight {
 
     #[test]
     fn should_calculate_new_weight_if_weight_exists() {
-        let mut neuron = Neuron::new(&2, &0.0, &1.0);
+        let neuron = Neuron::new(&2, &0.0, &1.0);
         let index = 0;
         let learning_rate = 0.01;
         let loss_value = 12.0;
@@ -71,7 +71,7 @@ mod calculate_new_weight {
     #[test]
     #[should_panic]
     fn should_not_calculate_new_weight_if_weight_does_not_exists() {
-        let mut neuron = Neuron::new(&2, &0.0, &1.0);
+        let neuron = Neuron::new(&2, &0.0, &1.0);
         let index = 2;
         let learning_rate = 0.01;
         let loss_value = 12.0;

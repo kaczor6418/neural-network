@@ -1,17 +1,19 @@
 use crate::neural_network::neuron::Neuron;
 
 pub struct Layer {
-    neurons: Vec<Neuron>,
     activation_function: fn(value: f64) -> f64,
-    activation_function_derivative: fn(value: f64) -> f64,
+    activation_function_derivative: fn(value: &f64) -> f64,
+    neurons: Vec<Neuron>,
+    values: Vec<f64>,
 }
 
 impl Layer {
-    pub fn new(activation_callback: &Option<fn(value: f64) -> f64>) -> Layer {
+    pub fn new(activation_function: &Option<fn(value: f64) -> f64>, activation_function_derivative: &Option<fn(value: &f64) -> f64>) -> Layer {
         return Layer {
+            activation_function: activation_function.unwrap_or(|value: f64| value),
+            activation_function_derivative: activation_function_derivative.unwrap_or(|_value: &f64| 1.0),
             neurons: vec![],
-            activation_function: activation_callback.unwrap_or(|value: f64| value),
-            activation_function_derivative: activation_callback.unwrap_or(|value: f64| 1.0),
+            values: vec![],
         };
     }
 
@@ -27,9 +29,21 @@ impl Layer {
         }
     }
 
-    pub fn calculate_outputs(&mut self, inputs: Vec<f64>) -> Vec<f64> {
-        let activation_callback = &mut self.activation_function; // ugly workaround to borrow checker complaining when writing these inline
-        return self.neurons.iter_mut().map(|neuron| (activation_callback)(neuron.calculate_output_value(&inputs))).collect();
+    pub fn calculate_outputs(&mut self, inputs: &Vec<f64>) -> &Vec<f64> {
+        self.values = self.neurons.iter().map(|neuron| (self.activation_function)(neuron.calculate_output_value(inputs))).collect();
+        return &self.values;
+    }
+
+    pub fn calculate_loss(&self, expected_values: &Vec<f64>, loss_function: &fn(expected: &f64, predicted: &f64) -> f64) -> Vec<f64> {
+        let mut expected_values_iter = expected_values.iter();
+        return self.values.iter().map(|value| (loss_function)(expected_values_iter.next().unwrap(), value) * (self.activation_function_derivative)(value)).collect();
+    }
+
+    pub fn correct_neurons_weight(&mut self, loss_values: &Vec<f64>, learning_rate: &f64) {
+        let mut loss_values_iter = loss_values.iter();
+        for (index, neuron) in self.neurons.iter_mut().enumerate() {
+            neuron.update_weight(index, learning_rate, loss_values_iter.next().unwrap());
+        }
     }
 }
 
