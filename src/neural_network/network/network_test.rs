@@ -60,20 +60,3 @@ mod new {
         assert_eq!(network.layers.len(), 3)
     }
 }
-
-mod forward_propagation {
-    use crate::neural_network::network::Network;
-    use crate::neural_network::network::network_test::{valid_config_with_three_layers, valid_config_with_one_layer};
-
-    #[test]
-    fn should_contains_output_with_two_values() {
-        let mut network = Network::new(valid_config_with_one_layer());
-        assert_eq!(network.forward_propagation().len(), 2);
-    }
-
-    #[test]
-    fn should_contains_output_with_five_values() {
-        let mut network = Network::new(valid_config_with_three_layers());
-        assert_eq!(network.forward_propagation().len(), 5);
-    }
-}
