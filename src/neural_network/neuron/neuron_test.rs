@@ -11,7 +11,7 @@ mod new {
     }
 }
 
-mod update_weight_value {
+mod set_weight {
     use crate::neural_network::neuron::Neuron;
 
     #[test]
@@ -19,7 +19,7 @@ mod update_weight_value {
         let mut neuron = Neuron::new(&1, &0.0, &1.0);
         let index = 0;
         let value = 1.1;
-        neuron.update_weight_value(index, value);
+        neuron.set_weight(index, value);
         assert_eq!(neuron.weights[index], value);
     }
 
@@ -27,19 +27,7 @@ mod update_weight_value {
     #[should_panic]
     fn should_not_update_weight_value_if_weight_dose_not_exists() {
         let mut neuron = Neuron::new(&1, &0.0, &1.0);
-        neuron.update_weight_value(1, 2.1);
-    }
-}
-
-mod set_weights_values {
-    use crate::neural_network::neuron::Neuron;
-
-    #[test]
-    fn should_set_inputs_values() {
-        let new_weights = vec![3.0];
-        let mut neuron = Neuron::new(&1, &0.0, &1.0);
-        neuron.set_weights_values(new_weights.clone());
-        assert_eq!(neuron.weights, new_weights);
+        neuron.set_weight(1, 2.1);
     }
 }
 
@@ -60,9 +48,58 @@ mod calculate_output_value {
         let inputs = vec![1.0, 2.0];
         let value = 2.0;
         let mut neuron = Neuron::new(&2, &0.0, &1.0);
-        neuron.update_weight_value(0, value);
+        neuron.set_weight(0, value);
         let expected_output_value = inputs[0] * neuron.weights[0] + inputs[1] * neuron.weights[1];
         let output_value = neuron.calculate_output_value(&inputs);
         assert_eq!(output_value, expected_output_value);
+    }
+}
+
+mod calculate_new_weight {
+    use crate::neural_network::neuron::Neuron;
+
+    #[test]
+    fn should_calculate_new_weight_if_weight_exists() {
+        let mut neuron = Neuron::new(&2, &0.0, &1.0);
+        let index = 0;
+        let learning_rate = 0.01;
+        let loss_value = 12.0;
+        let expected_new_value = neuron.weights[index] - learning_rate * loss_value;
+        assert_eq!(neuron.calculate_new_weight(index, &learning_rate, &loss_value), expected_new_value);
+    }
+
+    #[test]
+    #[should_panic]
+    fn should_not_calculate_new_weight_if_weight_does_not_exists() {
+        let mut neuron = Neuron::new(&2, &0.0, &1.0);
+        let index = 2;
+        let learning_rate = 0.01;
+        let loss_value = 12.0;
+        neuron.calculate_new_weight(index, &learning_rate, &loss_value);
+    }
+}
+
+mod update_weight {
+    use crate::neural_network::neuron::Neuron;
+
+    #[test]
+    fn should_update_weight_if_weight_exists() {
+        let mut neuron = Neuron::new(&2, &0.0, &1.0);
+        let index = 0;
+        let learning_rate = 0.01;
+        let loss_value = 12.0;
+        let expected_new_value = neuron.weights[index] - learning_rate * loss_value;
+        neuron.update_weight(index, &learning_rate, &loss_value);
+        assert_eq!(neuron.weights[index], expected_new_value);
+    }
+
+    #[test]
+    #[should_panic]
+    fn should_not_update_weight_if_weight_does_not_exists() {
+        let mut neuron = Neuron::new(&2, &0.0, &1.0);
+        let index = 2;
+        let learning_rate = 0.01;
+        let loss_value = 12.0;
+        neuron.update_weight(index, &learning_rate, &loss_value);
     }
 }
