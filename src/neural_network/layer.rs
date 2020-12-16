@@ -49,17 +49,13 @@ impl Layer {
         return &self.values;
     }
 
-    pub fn calculate_loss(
-        &self,
-        expected_values: &Vec<f64>,
-        loss_function: &fn(expected: &f64, predicted: &f64) -> f64,
-    ) -> Vec<f64> {
+    pub fn calculate_weight_delta(&self, expected_values: &Vec<f64>) -> Vec<f64> {
         let mut expected_values_iter = expected_values.iter();
         return self
             .values
             .iter()
             .map(|value| {
-                (loss_function)(expected_values_iter.next().unwrap(), value)
+                (expected_values_iter.next().unwrap() - value)
                     * (self.activation_function_derivative)(value)
             })
             .collect();

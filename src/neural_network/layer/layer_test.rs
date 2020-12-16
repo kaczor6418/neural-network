@@ -64,26 +64,40 @@ mod calculate_outputs {
     }
 }
 
-// mod calculate_loss {
-//     use crate::neural_network::layer::Layer;
-//
-//     #[test]
-//     fn should_return_two_loss_for_two_inputs() {
-//         let loss_function = |expected: &f64, predicted: &f64| (predicted - expected).powi(2);
-//         let expected_values = vec![1.0, 2.0];
-//         let mut layer = Layer::new(&None, &None);
-//         layer.add_neurons(&1, &2, &0.0, &1.0);
-//         layer.calculate_outputs(&vec![1.0, 2.0]);
-//         assert_eq!(layer.calculate_loss(&expected_values, &loss_function).len(), 2)
-//     }
-//
-//     #[test]
-//     fn should_return_two_loss_for_ten_inputs() {
-//         let loss_function = |expected: &f64, predicted: &f64| (predicted - expected).powi(2);
-//         let expected_values = vec![1.0, 2.0, 3.0];
-//         let mut layer = Layer::new(&None, &None);
-//         layer.add_neurons(&1, &3, &0.0, &1.0);
-//         layer.calculate_outputs(&vec![1.0, 2.0, 3.0]);
-//         assert_eq!(layer.calculate_loss(&expected_values, &loss_function).len(), 3)
-//     }
-// }
+mod calculate_weight_delta {
+    use crate::neural_network::layer::Layer;
+
+    #[test]
+    fn should_return_positive_delta() {
+        let expected_values = vec![100.0, 200.0];
+        let inputs = vec![1.0, 2.0];
+        let mut layer = Layer::new(&None, &None);
+        layer.add_neurons(&2, &2, &0.0, &1.0);
+        layer.calculate_outputs(&inputs);
+        let expected_delta = vec![
+            expected_values[0] - layer.values[0],
+            expected_values[1] - layer.values[1],
+        ];
+        assert_eq!(
+            layer.calculate_weight_delta(&expected_values),
+            expected_delta
+        )
+    }
+
+    #[test]
+    fn should_return_negative_delta() {
+        let expected_values = vec![1.0, 2.0];
+        let inputs = vec![-1.0, -2.0];
+        let mut layer = Layer::new(&None, &None);
+        layer.add_neurons(&2, &2, &0.0, &1.0);
+        layer.calculate_outputs(&inputs);
+        let expected_delta = vec![
+            expected_values[0] - layer.values[0],
+            expected_values[1] - layer.values[1],
+        ];
+        assert_eq!(
+            layer.calculate_weight_delta(&expected_values),
+            expected_delta
+        )
+    }
+}

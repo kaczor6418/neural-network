@@ -63,12 +63,11 @@ impl Network {
     }
 
     fn back_propagation(&mut self) {
-        let loss_function = &self.loss_function; // ugly workaround to borrow checker complaining when writing these inline
         let learning_rate = &self.learning_rate; // ugly workaround to borrow checker complaining when writing these inline
         let mut expected_values = self.expected_output.clone();
         let reversed_layers_iter = self.layers.iter_mut().rev();
         reversed_layers_iter.for_each(|layer| {
-            expected_values = layer.calculate_loss(&expected_values, loss_function);
+            expected_values = layer.calculate_weight_delta(&expected_values);
             layer.correct_neurons_weight(&expected_values, learning_rate);
         })
     }
