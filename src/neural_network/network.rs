@@ -24,9 +24,13 @@ impl Network {
         };
     }
 
-    pub fn fit(&mut self) {
-        self.forward_propagation();
-        self.back_propagation();
+    pub fn fit(&mut self, iterations: i32) {
+        let mut i = 0;
+        while i < iterations {
+            self.forward_propagation();
+            self.back_propagation();
+            i += 1;
+        }
     }
 
     fn generate_layers(config: &NetworkConfig) -> Vec<Layer> {
