@@ -2,8 +2,8 @@ use crate::neural_network::network::network_config::{LayerConfig, NetworkConfig,
 
 fn valid_config_with_one_layer() -> NetworkConfig {
     return NetworkConfig {
-        expected_output: vec![1.0, 2.0],
-        inputs: vec![1.0, 2.0, 3.0],
+        expected_outputs: vec![vec![1.0, 2.0]],
+        inputs: vec![vec![1.0, 2.0, 3.0]],
         layers: vec![LayerConfig {
             neurons_count: 2,
             activation_callback: None,
@@ -20,8 +20,8 @@ fn valid_config_with_one_layer() -> NetworkConfig {
 
 fn valid_config_with_three_layers() -> NetworkConfig {
     return NetworkConfig {
-        expected_output: vec![1.0, 2.0, 3.0, 4.0, 5.0],
-        inputs: vec![1.0, 2.0, 3.0],
+        expected_outputs: vec![vec![1.0, 2.0, 3.0, 4.0, 5.0]],
+        inputs: vec![vec![1.0, 2.0, 3.0]],
         layers: vec![
             LayerConfig {
                 neurons_count: 4,

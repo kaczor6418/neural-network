@@ -1,7 +1,7 @@
 pub struct NetworkConfig {
-    pub expected_output: Vec<f64>,
+    pub expected_outputs: Vec<Vec<f64>>,
     pub layers: Vec<LayerConfig>,
-    pub inputs: Vec<f64>,
+    pub inputs: Vec<Vec<f64>>,
     pub learning_rate: f64,
     pub loose_function: Option<fn(expected: &f64, predicted: &f64) -> f64>,
     pub weights_range: WeightsRange,

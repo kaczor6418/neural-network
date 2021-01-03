@@ -4,8 +4,8 @@ use crate::neural_network::network::network_config::NetworkConfig;
 pub mod network_config;
 
 pub struct Network {
-    expected_output: Vec<f64>,
-    inputs: Vec<f64>,
+    expected_outputs: Vec<Vec<f64>>,
+    inputs: Vec<Vec<f64>>,
     layers: Vec<Layer>,
     learning_rate: f64,
     loss_function: fn(expected: &f64, predicted: &f64) -> f64,
@@ -15,7 +15,7 @@ impl Network {
     pub fn new(config: NetworkConfig) -> Network {
         return Network {
             layers: Network::generate_layers(&config),
-            expected_output: config.expected_output,
+            expected_outputs: config.expected_outputs,
             inputs: config.inputs,
             learning_rate: config.learning_rate,
             loss_function: config
@@ -24,17 +24,22 @@ impl Network {
         };
     }
 
-    pub fn learn(&mut self, iterations: i32) {
+    pub fn train(&mut self, iterations: usize) {
         let mut i = 0;
         while i < iterations {
-            self.forward_propagation();
-            self.back_propagation();
+            let data_size = self.expected_outputs.len();
+            let mut j = 0;
+            while j < data_size {
+                self.forward_propagation(self.inputs[j].clone());
+                self.back_propagation(self.expected_outputs[j].clone());
+                j += 1;
+            }
             i += 1;
         }
     }
 
     fn generate_layers(config: &NetworkConfig) -> Vec<Layer> {
-        let mut inputs_count = config.inputs.len();
+        let mut inputs_count = config.inputs[0].len();
         return config
             .layers
             .iter()
@@ -55,20 +60,18 @@ impl Network {
             .collect();
     }
 
-    fn forward_propagation(&mut self) {
-        let mut inputs = &self.inputs.clone();
+    fn forward_propagation(&mut self, mut inputs: Vec<f64>) {
         self.layers
             .iter_mut()
-            .for_each(|layer| inputs = layer.calculate_outputs(inputs));
+            .for_each(|layer| inputs = layer.calculate_outputs(&inputs).clone());
     }
 
-    fn back_propagation(&mut self) {
+    fn back_propagation(&mut self, mut expected_output: Vec<f64>) {
         let learning_rate = &self.learning_rate; // ugly workaround to borrow checker complaining when writing these inline
-        let mut expected_values = self.expected_output.clone();
         let reversed_layers_iter = self.layers.iter_mut().rev();
         reversed_layers_iter.for_each(|layer| {
-            expected_values = layer.calculate_weight_delta(&expected_values);
-            layer.correct_neurons_weight(&expected_values, learning_rate);
+            expected_output = layer.calculate_weight_delta(&expected_output);
+            layer.correct_neurons_weight(&expected_output, learning_rate);
         })
     }
 }
