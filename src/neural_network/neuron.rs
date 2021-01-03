@@ -11,10 +11,10 @@ impl Neuron {
         };
     }
 
-    pub fn update_weight(&mut self, index: usize, learning_rate: &f64, loss_value: &f64) {
+    pub fn update_weight(&mut self, index: usize, learning_rate: &f64, delta_value: &f64) {
         self.set_weight(
             index,
-            self.calculate_new_weight(index, learning_rate, loss_value),
+            self.calculate_new_weight(index, learning_rate, delta_value),
         );
     }
 
@@ -44,8 +44,8 @@ impl Neuron {
         self.weights[index] = value;
     }
 
-    fn calculate_new_weight(&self, index: usize, learning_rate: &f64, loss_value: &f64) -> f64 {
-        return self.weights[index] - learning_rate * loss_value;
+    fn calculate_new_weight(&self, index: usize, learning_rate: &f64, delta_value: &f64) -> f64 {
+        return self.weights[index] - learning_rate * delta_value;
     }
 }
 

@@ -24,7 +24,7 @@ impl Network {
         };
     }
 
-    pub fn fit(&mut self, iterations: i32) {
+    pub fn learn(&mut self, iterations: i32) {
         let mut i = 0;
         while i < iterations {
             self.forward_propagation();

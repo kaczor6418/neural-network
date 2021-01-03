@@ -61,10 +61,10 @@ impl Layer {
             .collect();
     }
 
-    pub fn correct_neurons_weight(&mut self, loss_values: &Vec<f64>, learning_rate: &f64) {
-        let mut loss_values_iter = loss_values.iter();
+    pub fn correct_neurons_weight(&mut self, delta_values: &Vec<f64>, learning_rate: &f64) {
+        let mut delta_values_iterator = delta_values.iter();
         for (index, neuron) in self.neurons.iter_mut().enumerate() {
-            neuron.update_weight(index, learning_rate, loss_values_iter.next().unwrap());
+            neuron.update_weight(index, learning_rate, delta_values_iterator.next().unwrap());
         }
     }
 }
