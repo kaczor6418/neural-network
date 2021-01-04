@@ -4,8 +4,6 @@ use crate::neural_network::network::network_config::NetworkConfig;
 pub mod network_config;
 
 pub struct Network {
-    expected_outputs: Vec<Vec<f64>>,
-    inputs: Vec<Vec<f64>>,
     layers: Vec<Layer>,
     learning_rate: f64,
     loss_function: fn(expected: &f64, predicted: &f64) -> f64,
@@ -15,8 +13,6 @@ impl Network {
     pub fn new(config: NetworkConfig) -> Network {
         return Network {
             layers: Network::generate_layers(&config),
-            expected_outputs: config.expected_outputs,
-            inputs: config.inputs,
             learning_rate: config.learning_rate,
             loss_function: config
                 .loose_function
@@ -24,14 +20,14 @@ impl Network {
         };
     }
 
-    pub fn train(&mut self, iterations: usize) {
+    pub fn train(&mut self, inputs: Vec<Vec<f64>>, outputs: Vec<Vec<f64>>, iterations: usize) {
         let mut i = 0;
         while i < iterations {
-            let data_size = self.expected_outputs.len();
+            let data_size = outputs.len();
             let mut j = 0;
             while j < data_size {
-                self.forward_propagation(self.inputs[j].clone());
-                self.back_propagation(self.expected_outputs[j].clone());
+                self.forward_propagation(inputs[j].clone());
+                self.back_propagation(outputs[j].clone());
                 j += 1;
             }
             i += 1;
@@ -39,7 +35,7 @@ impl Network {
     }
 
     fn generate_layers(config: &NetworkConfig) -> Vec<Layer> {
-        let mut inputs_count = config.inputs[0].len();
+        let mut inputs_count = config.inputs_count;
         return config
             .layers
             .iter()
