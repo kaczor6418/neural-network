@@ -24,6 +24,10 @@ impl Matrix {
         );
     }
 
+    pub fn get_value(&self, row_index: usize, column_index: usize) -> f64 {
+        return self.values[row_index * self.columns_count + column_index];
+    }
+
     pub fn multiply_by_matrix(&self, matrix_b: Matrix) -> Matrix {
         if matrix_b.columns_count == 1 {
             let mut sum = 0.0;
