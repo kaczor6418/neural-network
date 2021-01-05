@@ -3,7 +3,7 @@ use crate::neural_network::network::network_config::{LayerConfig, NetworkConfig,
 fn valid_config_with_one_layer() -> NetworkConfig {
     return NetworkConfig {
         inputs_count: 3,
-        layers: vec![LayerConfig {
+        hidden_layers: vec![LayerConfig {
             neurons_count: 2,
             activation_callback: None,
             activation_function_derivative: None,
@@ -14,13 +14,18 @@ fn valid_config_with_one_layer() -> NetworkConfig {
             min_weight: 0.0,
             max_weight: 1.0,
         },
+        output_layer: LayerConfig {
+            neurons_count: 2,
+            activation_callback: None,
+            activation_function_derivative: None,
+        },
     };
 }
 
 fn valid_config_with_three_layers() -> NetworkConfig {
     return NetworkConfig {
         inputs_count: 3,
-        layers: vec![
+        hidden_layers: vec![
             LayerConfig {
                 neurons_count: 4,
                 activation_callback: None,
@@ -43,6 +48,11 @@ fn valid_config_with_three_layers() -> NetworkConfig {
             min_weight: 0.0,
             max_weight: 1.0,
         },
+        output_layer: LayerConfig {
+            neurons_count: 2,
+            activation_callback: None,
+            activation_function_derivative: None,
+        },
     };
 }
 
@@ -53,14 +63,14 @@ mod new {
     use crate::neural_network::network::Network;
 
     #[test]
-    fn should_create_network_with_one_layers() {
+    fn should_create_network_with_one_hidden_layer() {
         let network = Network::new(valid_config_with_one_layer());
-        assert_eq!(network.layers.len(), 1)
+        assert_eq!(network.hidden_layers.len(), 1)
     }
 
     #[test]
-    fn should_create_network_with_three_layers() {
+    fn should_create_network_with_three_hidden_layers() {
         let network = Network::new(valid_config_with_three_layers());
-        assert_eq!(network.layers.len(), 3)
+        assert_eq!(network.hidden_layers.len(), 3)
     }
 }
