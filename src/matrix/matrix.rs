@@ -59,6 +59,10 @@ impl Matrix {
         self.values[row_index * self.columns_count + column_index] = value;
     }
 
+    pub fn set_values(&mut self, values: Vec<f64>) {
+        self.values = values;
+    }
+
     pub fn subtract(&self, matrix: Matrix) -> Matrix {
         let mut matrix_iter = matrix.values.iter();
         return Matrix::new(
