@@ -58,3 +58,37 @@ mod multiply_by_digit {
         assert_eq!(result_matrix.values, expected_result.values);
     }
 }
+
+mod subtract {
+    use crate::matrix::matrix::Matrix;
+
+    #[test]
+    fn should_subtract_each_element_of_matrix_a_and_matrix_b() {
+        let matrix_a_values = vec![1.0, 2.0, 3.0];
+        let matrix_b_values = vec![3.0, 2.0, 1.0];
+        let expected_result = Matrix::new(3, vec![-2.0, 0.0, 2.0]);
+        let matrix_a = Matrix::new(3, matrix_a_values);
+        let matrix_b = Matrix::new(3, matrix_b_values);
+        let result_matrix = matrix_a.subtract(matrix_b);
+        assert_eq!(result_matrix.columns_count, expected_result.columns_count);
+        assert_eq!(result_matrix.rows_count, expected_result.rows_count);
+        assert_eq!(result_matrix.values, expected_result.values);
+    }
+}
+
+mod add {
+    use crate::matrix::matrix::Matrix;
+
+    #[test]
+    fn should_add_each_element_of_matrix_a_and_matrix_b() {
+        let matrix_a_values = vec![1.0, 2.0, 3.0];
+        let matrix_b_values = vec![3.0, 2.0, 1.0];
+        let expected_result = Matrix::new(3, vec![4.0, 4.0, 4.0]);
+        let matrix_a = Matrix::new(3, matrix_a_values);
+        let matrix_b = Matrix::new(3, matrix_b_values);
+        let result_matrix = matrix_a.add(matrix_b);
+        assert_eq!(result_matrix.columns_count, expected_result.columns_count);
+        assert_eq!(result_matrix.rows_count, expected_result.rows_count);
+        assert_eq!(result_matrix.values, expected_result.values);
+    }
+}
