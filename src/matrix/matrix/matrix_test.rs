@@ -120,3 +120,18 @@ mod get_value {
         assert_eq!(result, expected_result);
     }
 }
+
+mod set_value {
+    use crate::matrix::matrix::Matrix;
+
+    #[test]
+    fn should_set_value_under_given_position() {
+        let matrix_values = vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0];
+        let row_index = 1;
+        let column_index = 1;
+        let new_value = 10.0;
+        let mut matrix = Matrix::new(3, matrix_values);
+        matrix.set_value(row_index, column_index, new_value);
+        assert_eq!(matrix.get_value(row_index, column_index), new_value);
+    }
+}
