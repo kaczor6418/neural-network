@@ -13,6 +13,17 @@ impl Matrix {
         };
     }
 
+    pub fn add(&self, matrix: Matrix) -> Matrix {
+        let mut matrix_iter = matrix.values.iter();
+        return Matrix::new(
+            matrix.columns_count,
+            self.values
+                .iter()
+                .map(|value| value + matrix_iter.next().unwrap())
+                .collect(),
+        );
+    }
+
     pub fn multiply_by_matrix(&self, matrix_b: Matrix) -> Matrix {
         if matrix_b.columns_count == 1 {
             let mut sum = 0.0;
@@ -37,6 +48,17 @@ impl Matrix {
         return Matrix::new(
             self.columns_count,
             self.values.iter().map(|value| value * digit).collect(),
+        );
+    }
+
+    pub fn subtract(&self, matrix: Matrix) -> Matrix {
+        let mut matrix_iter = matrix.values.iter();
+        return Matrix::new(
+            matrix.columns_count,
+            self.values
+                .iter()
+                .map(|value| value - matrix_iter.next().unwrap())
+                .collect(),
         );
     }
 
