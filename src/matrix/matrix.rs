@@ -55,6 +55,10 @@ impl Matrix {
         );
     }
 
+    pub fn set_value(&mut self, row_index: usize, column_index: usize, value: f64) {
+        self.values[row_index * self.columns_count + column_index] = value;
+    }
+
     pub fn subtract(&self, matrix: Matrix) -> Matrix {
         let mut matrix_iter = matrix.values.iter();
         return Matrix::new(
