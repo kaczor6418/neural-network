@@ -62,6 +62,17 @@ impl Matrix {
         );
     }
 
+    pub fn transpose(&self) -> Matrix {
+        let mut values: Vec<f64> = vec![];
+        for column_index in 0..self.columns_count {
+            values = values
+                .into_iter()
+                .chain(self.get_matrix_column(column_index).values.into_iter())
+                .collect();
+        }
+        return Matrix::new(self.rows_count, values);
+    }
+
     fn get_matrix_row(&self, row_index: usize) -> Matrix {
         let row = self.values
             [row_index * self.columns_count..row_index * self.columns_count + self.columns_count]
