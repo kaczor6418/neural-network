@@ -107,3 +107,16 @@ mod transpose {
         assert_eq!(result_matrix.values, expected_result.values);
     }
 }
+
+mod get_value {
+    use crate::matrix::matrix::Matrix;
+
+    #[test]
+    fn should_return_value_under_given_position() {
+        let matrix_values = vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0];
+        let expected_result = 5.0;
+        let matrix = Matrix::new(3, matrix_values);
+        let result = matrix.get_value(1, 1);
+        assert_eq!(result, expected_result);
+    }
+}
