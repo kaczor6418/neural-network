@@ -7,7 +7,7 @@ mod new {
         let min_weight = 0.0;
         let max_weight = 1.0;
         let neuron = Neuron::new(&weights_count, &min_weight, &max_weight);
-        assert_eq!(neuron.weights.len(), weights_count);
+        assert_eq!(neuron.weights.rows_count(), weights_count);
     }
 }
 
@@ -20,7 +20,7 @@ mod set_weight {
         let index = 0;
         let value = 1.1;
         neuron.set_weight(index, value);
-        assert_eq!(neuron.weights[index], value);
+        assert_eq!(neuron.weights[index][0], value);
     }
 
     #[test]
@@ -32,24 +32,26 @@ mod set_weight {
 }
 
 mod calculate_output_value {
+    use crate::matrix::matrix::Matrix;
     use crate::neural_network::neuron::Neuron;
 
     #[test]
     fn should_calculate_value() {
-        let inputs = vec![1.0, 2.0];
+        let inputs = Matrix::new(2, Some(vec![1.0, 2.0]));
         let neuron = Neuron::new(&2, &0.0, &1.0);
-        let expected_output_value = inputs[0] * neuron.weights[0] + inputs[1] * neuron.weights[1];
+        let expected_output_value = (&inputs * &neuron.weights)[0][0];
         let output_value = neuron.calculate_output_value(&inputs);
         assert_eq!(output_value, expected_output_value);
     }
 
     #[test]
     fn should_calculate_value_for_changed_weight() {
-        let inputs = vec![1.0, 2.0];
+        let inputs = Matrix::new(2, Some(vec![1.0, 2.0]));
         let value = 2.0;
         let mut neuron = Neuron::new(&2, &0.0, &1.0);
         neuron.set_weight(0, value);
-        let expected_output_value = inputs[0] * neuron.weights[0] + inputs[1] * neuron.weights[1];
+        let expected_output_value =
+            inputs[0][0] * neuron.weights[0][0] + inputs[0][1] * neuron.weights[1][0];
         let output_value = neuron.calculate_output_value(&inputs);
         assert_eq!(output_value, expected_output_value);
     }
@@ -64,7 +66,7 @@ mod calculate_new_weight {
         let index = 0;
         let learning_rate = 0.01;
         let loss_value = 12.0;
-        let expected_new_value = neuron.weights[index] - learning_rate * loss_value;
+        let expected_new_value = neuron.weights[index][0] - learning_rate * loss_value;
         assert_eq!(
             neuron.calculate_new_weight(index, &learning_rate, &loss_value),
             expected_new_value
@@ -91,9 +93,9 @@ mod update_weight {
         let index = 0;
         let learning_rate = 0.01;
         let loss_value = 12.0;
-        let expected_new_value = neuron.weights[index] - learning_rate * loss_value;
+        let expected_new_value = neuron.weights[index][0] - learning_rate * loss_value;
         neuron.update_weight(index, &learning_rate, &loss_value);
-        assert_eq!(neuron.weights[index], expected_new_value);
+        assert_eq!(neuron.weights[index][0], expected_new_value);
     }
 
     #[test]
