@@ -201,7 +201,7 @@ mod get_value {
     }
 
     #[test]
-    fn should_return_value_under_given_position_by_overloaded_index_operator() {
+    fn should_return_value_under_given_position_with_overloaded_index_operator() {
         let matrix_values = vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0];
         let expected_result = 5.0;
         let matrix = Matrix::new(3, Some(matrix_values));
@@ -242,7 +242,7 @@ mod columns_count {
     #[test]
     fn should_create_matrix_with_given_number_of_columns() {
         let columns_count = 6;
-        let mut matrix = Matrix::new(columns_count, None);
+        let matrix = Matrix::new(columns_count, None);
         assert_eq!(matrix.columns_count(), columns_count);
     }
 }
@@ -255,7 +255,7 @@ mod rows_count {
         let columns_count = 2;
         let matrix_values = vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0];
         let rows_count = matrix_values.len() / columns_count;
-        let mut matrix = Matrix::new(columns_count, Some(matrix_values));
+        let matrix = Matrix::new(columns_count, Some(matrix_values));
         assert_eq!(matrix.rows_count(), rows_count);
     }
 }

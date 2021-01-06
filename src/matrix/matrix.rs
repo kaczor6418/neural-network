@@ -1,5 +1,3 @@
-use std::ops;
-
 pub struct Matrix {
     values: Vec<f64>,
     columns_count: usize,
@@ -7,7 +5,7 @@ pub struct Matrix {
 }
 
 impl Matrix {
-    pub fn new(columns_count: usize, mut values: Option<Vec<f64>>) -> Matrix {
+    pub fn new(columns_count: usize, values: Option<Vec<f64>>) -> Matrix {
         return match values {
             Some(initial_values) => Matrix {
                 rows_count: initial_values.len() / columns_count,
