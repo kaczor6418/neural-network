@@ -1,13 +1,21 @@
+use crate::matrix::matrix::Matrix;
 use rand::Rng;
 
 pub struct Neuron {
-    weights: Vec<f64>,
+    weights: Matrix,
 }
 
 impl Neuron {
     pub fn new(weights_count: &usize, min_weight: &f64, max_weight: &f64) -> Neuron {
         return Neuron {
-            weights: Neuron::generate_random_weights(&weights_count, &min_weight, &max_weight),
+            weights: Matrix::new(
+                1,
+                Some(Neuron::generate_random_weights(
+                    &weights_count,
+                    &min_weight,
+                    &max_weight,
+                )),
+            ),
         };
     }
 
@@ -18,12 +26,8 @@ impl Neuron {
         );
     }
 
-    pub fn calculate_output_value(&self, inputs: &Vec<f64>) -> f64 {
-        let mut weights_iterator = self.weights.iter();
-        return inputs
-            .iter()
-            .map(|input| input * weights_iterator.next().unwrap())
-            .sum();
+    pub fn calculate_output_value(&self, inputs: &Matrix) -> f64 {
+        return (inputs * &self.weights)[0][0];
     }
 
     fn generate_random_weights(
@@ -41,11 +45,11 @@ impl Neuron {
     }
 
     fn set_weight(&mut self, index: usize, value: f64) {
-        self.weights[index] = value;
+        self.weights[index][0] = value;
     }
 
     fn calculate_new_weight(&self, index: usize, learning_rate: &f64, delta_value: &f64) -> f64 {
-        return self.weights[index] - learning_rate * delta_value;
+        return self.weights[index][0] - learning_rate * delta_value;
     }
 }
 
