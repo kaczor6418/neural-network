@@ -30,7 +30,7 @@ mod multiply_matrix {
         let expected_result = Matrix::new(2, Some(vec![7.0, 8.0, 14.0, 16.0]));
         let matrix_a = Matrix::new(3, Some(matrix_a_values));
         let matrix_b = Matrix::new(2, Some(matrix_b_values));
-        let result_matrix = matrix_a.multiply_by_matrix(matrix_b);
+        let result_matrix = matrix_a.multiply_by_matrix(&matrix_b);
         assert_eq!(result_matrix.columns_count, expected_result.columns_count);
         assert_eq!(result_matrix.rows_count, expected_result.rows_count);
         assert_eq!(result_matrix.values, expected_result.values);
@@ -44,7 +44,7 @@ mod multiply_matrix {
         let expected_result = Matrix::new(2, Some(vec![7.0, 8.0, 14.0, 16.0]));
         let matrix_a = Matrix::new(3, Some(matrix_a_values));
         let matrix_b = Matrix::new(2, Some(matrix_b_values));
-        let result_matrix = matrix_a * matrix_b;
+        let result_matrix = matrix_a * &matrix_b;
         assert_eq!(result_matrix.columns_count, expected_result.columns_count);
         assert_eq!(result_matrix.rows_count, expected_result.rows_count);
         assert_eq!(result_matrix.values, expected_result.values);
@@ -57,7 +57,7 @@ mod multiply_matrix {
         let expected_result = Matrix::new(1, Some(vec![14.0]));
         let matrix_a = Matrix::new(3, Some(matrix_a_values));
         let matrix_b = Matrix::new(1, Some(matrix_b_values));
-        let result_matrix = matrix_a.multiply_by_matrix(matrix_b);
+        let result_matrix = matrix_a.multiply_by_matrix(&matrix_b);
         assert_eq!(result_matrix.columns_count, expected_result.columns_count);
         assert_eq!(result_matrix.rows_count, expected_result.rows_count);
         assert_eq!(result_matrix.values, expected_result.values);
@@ -91,7 +91,7 @@ mod multiply_by_digit {
             Some(matrix_values.iter().map(|value| value * digit).collect()),
         );
         let matrix = Matrix::new(3, Some(matrix_values));
-        let result_matrix = matrix * digit;
+        let result_matrix = &matrix * digit;
         assert_eq!(result_matrix.columns_count, expected_result.columns_count);
         assert_eq!(result_matrix.rows_count, expected_result.rows_count);
         assert_eq!(result_matrix.values, expected_result.values);
@@ -106,7 +106,7 @@ mod multiply_by_digit {
             Some(matrix_values.iter().map(|value| value * digit).collect()),
         );
         let matrix = Matrix::new(3, Some(matrix_values));
-        let result_matrix = digit * matrix;
+        let result_matrix = digit * &matrix;
         assert_eq!(result_matrix.columns_count, expected_result.columns_count);
         assert_eq!(result_matrix.rows_count, expected_result.rows_count);
         assert_eq!(result_matrix.values, expected_result.values);
@@ -123,7 +123,7 @@ mod subtract {
         let expected_result = Matrix::new(3, Some(vec![-2.0, 0.0, 2.0]));
         let matrix_a = Matrix::new(3, Some(matrix_a_values));
         let matrix_b = Matrix::new(3, Some(matrix_b_values));
-        let result_matrix = matrix_a.subtract_matrix(matrix_b);
+        let result_matrix = matrix_a.subtract_matrix(&matrix_b);
         assert_eq!(result_matrix.columns_count, expected_result.columns_count);
         assert_eq!(result_matrix.rows_count, expected_result.rows_count);
         assert_eq!(result_matrix.values, expected_result.values);
@@ -136,7 +136,7 @@ mod subtract {
         let expected_result = Matrix::new(3, Some(vec![-2.0, 0.0, 2.0]));
         let matrix_a = Matrix::new(3, Some(matrix_a_values));
         let matrix_b = Matrix::new(3, Some(matrix_b_values));
-        let result_matrix = matrix_a - matrix_b;
+        let result_matrix = matrix_a - &matrix_b;
         assert_eq!(result_matrix.columns_count, expected_result.columns_count);
         assert_eq!(result_matrix.rows_count, expected_result.rows_count);
         assert_eq!(result_matrix.values, expected_result.values);
@@ -153,7 +153,7 @@ mod add {
         let expected_result = Matrix::new(3, Some(vec![4.0, 4.0, 4.0]));
         let matrix_a = Matrix::new(3, Some(matrix_a_values));
         let matrix_b = Matrix::new(3, Some(matrix_b_values));
-        let result_matrix = matrix_a.add_matrix(matrix_b);
+        let result_matrix = matrix_a.add_matrix(&matrix_b);
         assert_eq!(result_matrix.columns_count, expected_result.columns_count);
         assert_eq!(result_matrix.rows_count, expected_result.rows_count);
         assert_eq!(result_matrix.values, expected_result.values);
@@ -166,7 +166,7 @@ mod add {
         let expected_result = Matrix::new(3, Some(vec![4.0, 4.0, 4.0]));
         let matrix_a = Matrix::new(3, Some(matrix_a_values));
         let matrix_b = Matrix::new(3, Some(matrix_b_values));
-        let result_matrix = matrix_a + matrix_b;
+        let result_matrix = matrix_a + &matrix_b;
         assert_eq!(result_matrix.columns_count, expected_result.columns_count);
         assert_eq!(result_matrix.rows_count, expected_result.rows_count);
         assert_eq!(result_matrix.values, expected_result.values);

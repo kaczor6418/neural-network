@@ -22,7 +22,7 @@ impl Matrix {
         };
     }
 
-    pub fn add_matrix(&self, matrix: Matrix) -> Matrix {
+    pub fn add_matrix(&self, matrix: &Matrix) -> Matrix {
         let mut matrix_iter = matrix.values.iter();
         return Matrix::new(
             matrix.columns_count,
@@ -43,7 +43,7 @@ impl Matrix {
         return self.values[row_index * self.columns_count + column_index];
     }
 
-    pub fn multiply_by_matrix(&self, matrix: Matrix) -> Matrix {
+    pub fn multiply_by_matrix(&self, matrix: &Matrix) -> Matrix {
         let mut result: Vec<f64> = vec![0.0; self.rows_count * matrix.columns_count];
         for row_index in 0..self.rows_count {
             for column_index in 0..matrix.columns_count {
@@ -72,7 +72,7 @@ impl Matrix {
         self.values = values;
     }
 
-    pub fn subtract_matrix(&self, matrix: Matrix) -> Matrix {
+    pub fn subtract_matrix(&self, matrix: &Matrix) -> Matrix {
         let mut matrix_iter = matrix.values.iter();
         return Matrix::new(
             matrix.columns_count,

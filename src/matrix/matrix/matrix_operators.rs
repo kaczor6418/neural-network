@@ -1,37 +1,58 @@
 use crate::matrix::matrix::Matrix;
 use std::ops::{Add, Index, IndexMut, Mul, Sub};
 
-impl Add<Matrix> for Matrix {
+impl Add<&Matrix> for Matrix {
     type Output = Matrix;
-    fn add(self, matrix: Matrix) -> Matrix {
+    fn add(self, matrix: &Matrix) -> Matrix {
         return self.add_matrix(matrix);
     }
 }
 
-impl Sub<Matrix> for Matrix {
+impl Add<&Matrix> for &Matrix {
     type Output = Matrix;
-    fn sub(self, matrix: Matrix) -> Matrix {
+    fn add(self, matrix: &Matrix) -> Matrix {
+        return self.add_matrix(matrix);
+    }
+}
+
+impl Sub<&Matrix> for Matrix {
+    type Output = Matrix;
+    fn sub(self, matrix: &Matrix) -> Matrix {
         return self.subtract_matrix(matrix);
     }
 }
 
-impl Mul<Matrix> for Matrix {
+impl Sub<&Matrix> for &Matrix {
     type Output = Matrix;
-    fn mul(self, matrix: Matrix) -> Matrix {
+    fn sub(self, matrix: &Matrix) -> Matrix {
+        return self.subtract_matrix(matrix);
+    }
+}
+
+impl Mul<&Matrix> for Matrix {
+    type Output = Matrix;
+    fn mul(self, matrix: &Matrix) -> Matrix {
         return self.multiply_by_matrix(matrix);
     }
 }
 
-impl Mul<f64> for Matrix {
+impl Mul<&Matrix> for &Matrix {
+    type Output = Matrix;
+    fn mul(self, matrix: &Matrix) -> Matrix {
+        return self.multiply_by_matrix(matrix);
+    }
+}
+
+impl Mul<f64> for &Matrix {
     type Output = Matrix;
     fn mul(self, digit: f64) -> Matrix {
         return self.multiply_by_digit(digit);
     }
 }
 
-impl Mul<Matrix> for f64 {
+impl Mul<&Matrix> for f64 {
     type Output = Matrix;
-    fn mul(self, matrix: Matrix) -> Matrix {
+    fn mul(self, matrix: &Matrix) -> Matrix {
         return matrix.multiply_by_digit(self);
     }
 }
