@@ -10,11 +10,7 @@ impl Neuron {
         return Neuron {
             weights: Matrix::new(
                 1,
-                Some(Neuron::generate_random_weights(
-                    &weights_count,
-                    &min_weight,
-                    &max_weight,
-                )),
+                Neuron::generate_random_weights(&weights_count, &min_weight, &max_weight),
             ),
         };
     }

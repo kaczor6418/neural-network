@@ -37,7 +37,7 @@ mod calculate_output_value {
 
     #[test]
     fn should_calculate_value() {
-        let inputs = Matrix::new(2, Some(vec![1.0, 2.0]));
+        let inputs = Matrix::new(2, vec![1.0, 2.0]);
         let neuron = Neuron::new(&2, &0.0, &1.0);
         let expected_output_value = (&inputs * &neuron.weights)[0][0];
         let output_value = neuron.calculate_output_value(&inputs);
@@ -46,7 +46,7 @@ mod calculate_output_value {
 
     #[test]
     fn should_calculate_value_for_changed_weight() {
-        let inputs = Matrix::new(2, Some(vec![1.0, 2.0]));
+        let inputs = Matrix::new(2, vec![1.0, 2.0]);
         let value = 2.0;
         let mut neuron = Neuron::new(&2, &0.0, &1.0);
         neuron.set_weight(0, value);
