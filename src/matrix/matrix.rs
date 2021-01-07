@@ -5,18 +5,11 @@ pub struct Matrix {
 }
 
 impl Matrix {
-    pub fn new(columns_count: usize, values: Option<Vec<f64>>) -> Matrix {
-        return match values {
-            Some(initial_values) => Matrix {
-                rows_count: initial_values.len() / columns_count,
-                values: initial_values,
-                columns_count,
-            },
-            None => Matrix {
-                rows_count: 1,
-                values: vec![0.0; columns_count],
-                columns_count,
-            },
+    pub fn new(columns_count: usize, values: Vec<f64>) -> Matrix {
+        return Matrix {
+            rows_count: values.len() / columns_count,
+            values,
+            columns_count,
         };
     }
 
@@ -42,12 +35,10 @@ impl Matrix {
         let mut matrix_iter = matrix.values.iter();
         return Matrix::new(
             matrix.columns_count,
-            Some(
-                self.values
-                    .iter()
-                    .map(|value| value + matrix_iter.next().unwrap())
-                    .collect(),
-            ),
+            self.values
+                .iter()
+                .map(|value| value + matrix_iter.next().unwrap())
+                .collect(),
         );
     }
 
@@ -70,13 +61,13 @@ impl Matrix {
                     );
             }
         }
-        return Matrix::new(matrix.columns_count, Some(result));
+        return Matrix::new(matrix.columns_count, result);
     }
 
     pub fn multiply_by_digit(&self, digit: f64) -> Matrix {
         return Matrix::new(
             self.columns_count,
-            Some(self.values.iter().map(|value| value * digit).collect()),
+            self.values.iter().map(|value| value * digit).collect(),
         );
     }
 
@@ -92,12 +83,10 @@ impl Matrix {
         let mut matrix_iter = matrix.values.iter();
         return Matrix::new(
             matrix.columns_count,
-            Some(
-                self.values
-                    .iter()
-                    .map(|value| value - matrix_iter.next().unwrap())
-                    .collect(),
-            ),
+            self.values
+                .iter()
+                .map(|value| value - matrix_iter.next().unwrap())
+                .collect(),
         );
     }
 
@@ -113,7 +102,7 @@ impl Matrix {
                 .chain(self.get_matrix_column(column_index).into_iter())
                 .collect();
         }
-        return Matrix::new(self.rows_count, Some(values));
+        return Matrix::new(self.rows_count, values);
     }
 
     fn get_matrix_row(&self, row_index: usize) -> &[f64] {
