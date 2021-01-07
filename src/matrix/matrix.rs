@@ -20,6 +20,24 @@ impl Matrix {
         };
     }
 
+    pub fn new_zeros_matrix(rows_count: usize, columns_count: usize) -> Matrix {
+        return Matrix {
+            rows_count,
+            columns_count,
+            values: vec![0.0; rows_count * columns_count],
+        };
+    }
+
+    pub fn new_identity_matrix(rows_count: usize, columns_count: usize) -> Matrix {
+        let mut matrix = Matrix::new_zeros_matrix(rows_count, columns_count);
+        let mut column_index = 0;
+        for row_index in 0..rows_count {
+            matrix[row_index][column_index] = 1.0;
+            column_index += 1;
+        }
+        return matrix;
+    }
+
     pub fn add_matrix(&self, matrix: &Matrix) -> Matrix {
         let mut matrix_iter = matrix.values.iter();
         return Matrix::new(
