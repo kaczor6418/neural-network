@@ -37,7 +37,7 @@ mod get_weights {
     #[test]
     fn should_update_weight_value_if_weight_exists() {
         let mut neuron = Neuron::new(&3, &0.0, &1.0);
-        assert_eq!(neuron.get_weights().len(), 3);
+        assert_eq!(neuron.get_weights().get_values().len(), 3);
     }
 }
 

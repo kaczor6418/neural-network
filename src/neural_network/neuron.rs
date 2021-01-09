@@ -26,8 +26,8 @@ impl Neuron {
         return (inputs * &self.weights)[0][0];
     }
 
-    pub fn get_weights(&self) -> &Vec<f64> {
-        return &self.weights.get_values();
+    pub fn get_weights(&self) -> &Matrix {
+        return &self.weights;
     }
 
     fn generate_random_weights(
