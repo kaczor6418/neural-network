@@ -31,6 +31,16 @@ mod set_weight {
     }
 }
 
+mod get_weights {
+    use crate::neural_network::neuron::Neuron;
+
+    #[test]
+    fn should_update_weight_value_if_weight_exists() {
+        let mut neuron = Neuron::new(&3, &0.0, &1.0);
+        assert_eq!(neuron.get_weights().len(), 3);
+    }
+}
+
 mod calculate_output_value {
     use crate::matrix::matrix::Matrix;
     use crate::neural_network::neuron::Neuron;
