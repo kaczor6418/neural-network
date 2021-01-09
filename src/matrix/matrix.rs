@@ -50,6 +50,10 @@ impl Matrix {
         return self.values[row_index * self.columns_count + column_index];
     }
 
+    pub fn get_values(&self) -> &Vec<f64> {
+        return &self.values;
+    }
+
     pub fn multiply_by_matrix(&self, matrix: &Matrix) -> Matrix {
         let mut result: Vec<f64> = vec![0.0; self.rows_count * matrix.columns_count];
         for row_index in 0..self.rows_count {

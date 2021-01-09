@@ -221,6 +221,17 @@ mod get_value {
     }
 }
 
+mod get_values {
+    use crate::matrix::matrix::Matrix;
+
+    #[test]
+    fn should_return_all_matrix_values() {
+        let matrix_values = vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0];
+        let matrix = Matrix::new(3, matrix_values.clone());
+        assert_eq!(matrix.get_values(), &matrix_values);
+    }
+}
+
 mod set_value {
     use crate::matrix::matrix::Matrix;
 
