@@ -54,6 +54,27 @@ impl Matrix {
         return &self.values;
     }
 
+    pub fn kronecker_product(&self, matrix: &Matrix) -> Matrix {
+        let mut product = Matrix::new_zeros_matrix(0, 0);
+        for row_index in 0..self.rows_count {
+            let mut single_level_matrix = Matrix::new_zeros_matrix(0, 0);
+            for column_index in 0..self.columns_count {
+                let component = self[row_index][column_index] * matrix;
+                if single_level_matrix.rows_count == 0 {
+                    single_level_matrix = component;
+                } else {
+                    single_level_matrix = single_level_matrix.join_horizontal(&component);
+                }
+            }
+            if product.rows_count == 0 {
+                product = single_level_matrix;
+            } else {
+                product = product.join_vertical(&single_level_matrix);
+            }
+        }
+        return product;
+    }
+
     pub fn join_horizontal(&self, matrix: &Matrix) -> Matrix {
         let total_columns_count = self.columns_count + matrix.columns_count;
         let mut output_matrix = Matrix::new_zeros_matrix(self.rows_count, total_columns_count);
