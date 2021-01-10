@@ -21,7 +21,7 @@ impl Layer {
                 .activation_function_derivative
                 .unwrap_or(|_value: &f64| 1.0),
             neurons: vec![],
-            values: Matrix::new_zeros_matrix(1, inputs_count),
+            values: Matrix::new_zeros_matrix(1, config.neurons_count),
         };
         layer.add_neurons(config.neurons_count, inputs_count, config.weights_range);
         return layer;
@@ -43,16 +43,12 @@ impl Layer {
         next_layer_delta: &Matrix,
         next_layer_weights: &Matrix,
     ) {
-        let new_weights = self.get_neurons_weights()
-            - learning_rate
-                * self.calculate_wights_delta(
-                    prev_layer_values,
-                    next_layer_delta,
-                    next_layer_weights,
-                );
+        let weights_delta = learning_rate.clone()
+            * &self.calculate_wights_delta(prev_layer_values, next_layer_delta, next_layer_weights);
+        let new_weights = &self.get_neurons_weights() - &weights_delta;
         for row_index in 0..new_weights.rows_count() {
             self.neurons[row_index]
-                .get_weights()
+                .get_mutable_weights()
                 .set_values(new_weights.get_values().clone())
         }
     }
@@ -112,13 +108,11 @@ impl Layer {
     }
 
     fn get_neurons_weights(&self) -> Matrix {
-        return Matrix::new(
-            self.neurons[0].get_weights().get_values().len(),
-            self.neurons
-                .iter()
-                .map(|neuron| neuron.get_weights().get_values())
-                .collect(),
-        );
+        let mut values: Vec<f64> = vec![];
+        self.neurons
+            .iter()
+            .for_each(|neuron| values.extend(neuron.get_weights().get_values()));
+        return Matrix::new(self.neurons[0].get_weights().get_values().len(), values);
     }
 }
 
