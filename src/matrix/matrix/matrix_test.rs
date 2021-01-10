@@ -81,6 +81,46 @@ mod multiply_matrix {
     }
 }
 
+mod multiply_by_vector {
+    use crate::matrix::matrix::Matrix;
+
+    #[test]
+    fn should_multiply_matrix_values_by_vector_values() {
+        let vector = vec![1.0, 2.0, 3.0];
+        let matrix_values = vec![1.0, 2.0, 3.0];
+        let expected_result = Matrix::new(3, vec![1.0, 4.0, 9.0]);
+        let matrix = Matrix::new(3, matrix_values);
+        let result_matrix = matrix.multiply_by_vector(&vector);
+        assert_eq!(result_matrix.columns_count, expected_result.columns_count);
+        assert_eq!(result_matrix.rows_count, expected_result.rows_count);
+        assert_eq!(result_matrix.values, expected_result.values);
+    }
+
+    #[test]
+    fn should_multiply_matrix_values_by_vector_values_with_overloaded_mul_right_operator() {
+        let vector = vec![1.0, 2.0, 3.0];
+        let matrix_values = vec![1.0, 2.0, 3.0];
+        let expected_result = Matrix::new(3, vec![1.0, 4.0, 9.0]);
+        let matrix = Matrix::new(3, matrix_values);
+        let result_matrix = matrix * &vector;
+        assert_eq!(result_matrix.columns_count, expected_result.columns_count);
+        assert_eq!(result_matrix.rows_count, expected_result.rows_count);
+        assert_eq!(result_matrix.values, expected_result.values);
+    }
+
+    #[test]
+    fn should_multiply_matrix_values_by_vector_values_with_overloaded_mul_left_operator() {
+        let vector = vec![1.0, 2.0, 3.0];
+        let matrix_values = vec![1.0, 2.0, 3.0];
+        let expected_result = Matrix::new(3, vec![1.0, 4.0, 9.0]);
+        let matrix = Matrix::new(3, matrix_values);
+        let result_matrix = vector * &matrix;
+        assert_eq!(result_matrix.columns_count, expected_result.columns_count);
+        assert_eq!(result_matrix.rows_count, expected_result.rows_count);
+        assert_eq!(result_matrix.values, expected_result.values);
+    }
+}
+
 mod multiply_by_digit {
     use crate::matrix::matrix::Matrix;
 

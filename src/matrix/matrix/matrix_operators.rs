@@ -57,6 +57,20 @@ impl Mul<&Matrix> for f64 {
     }
 }
 
+impl Mul<&Vec<f64>> for Matrix {
+    type Output = Matrix;
+    fn mul(self, values: &Vec<f64>) -> Matrix {
+        return self.multiply_by_vector(values);
+    }
+}
+
+impl Mul<&Matrix> for Vec<f64> {
+    type Output = Matrix;
+    fn mul(self, matrix: &Matrix) -> Matrix {
+        return matrix.multiply_by_vector(&self);
+    }
+}
+
 impl Index<usize> for Matrix {
     type Output = [f64];
     fn index(&self, row_index: usize) -> &[f64] {
