@@ -49,7 +49,7 @@ impl Layer {
         for row_index in 0..new_weights.rows_count() {
             self.neurons[row_index]
                 .get_mutable_weights()
-                .set_values(new_weights.get_values().clone())
+                .set_values(new_weights[row_index].to_vec())
         }
     }
 
@@ -94,7 +94,9 @@ impl Layer {
         next_layer_delta: &Matrix,
         next_layer_weights: &Matrix,
     ) -> Matrix {
-        return next_layer_delta * next_layer_weights * &self.calculate_derivative_values();
+        return next_layer_delta
+            * next_layer_weights
+            * self.calculate_derivative_values().get_values();
     }
 
     fn calculate_wights_delta(
@@ -103,8 +105,10 @@ impl Layer {
         next_layer_delta: &Matrix,
         next_layer_weights: &Matrix,
     ) -> Matrix {
-        return self.calculate_layer_delta(next_layer_delta, next_layer_weights)
-            * prev_layer_values;
+        return self
+            .calculate_layer_delta(next_layer_delta, next_layer_weights)
+            .transpose()
+            .kronecker_product(prev_layer_values);
     }
 
     fn get_neurons_weights(&self) -> Matrix {
