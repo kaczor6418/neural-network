@@ -27,6 +27,16 @@ impl Layer {
         return layer;
     }
 
+    pub fn calculate_layer_delta(
+        &self,
+        next_layer_delta: &Matrix,
+        next_layer_weights: &Matrix,
+    ) -> Matrix {
+        return next_layer_delta
+            * next_layer_weights
+            * self.calculate_derivative_values().get_values();
+    }
+
     pub fn calculate_values(&mut self, inputs: &Matrix) {
         self.values.set_values(
             self.neurons
@@ -49,7 +59,7 @@ impl Layer {
         for row_index in 0..new_weights.rows_count() {
             self.neurons[row_index]
                 .get_mutable_weights()
-                .set_values(new_weights.get_values().clone())
+                .set_values(new_weights[row_index].to_vec())
         }
     }
 
@@ -59,6 +69,14 @@ impl Layer {
 
     pub fn size(&self) -> usize {
         return self.neurons.len();
+    }
+
+    pub fn get_neurons_weights(&self) -> Matrix {
+        let mut values: Vec<f64> = vec![];
+        self.neurons
+            .iter()
+            .for_each(|neuron| values.extend(neuron.get_weights().get_values()));
+        return Matrix::new(self.neurons[0].get_weights().get_values().len(), values);
     }
 
     fn add_neurons(
@@ -89,30 +107,16 @@ impl Layer {
         );
     }
 
-    fn calculate_layer_delta(
-        &self,
-        next_layer_delta: &Matrix,
-        next_layer_weights: &Matrix,
-    ) -> Matrix {
-        return next_layer_delta * next_layer_weights * &self.calculate_derivative_values();
-    }
-
     fn calculate_wights_delta(
         &self,
         prev_layer_values: &Matrix,
         next_layer_delta: &Matrix,
         next_layer_weights: &Matrix,
     ) -> Matrix {
-        return self.calculate_layer_delta(next_layer_delta, next_layer_weights)
-            * prev_layer_values;
-    }
-
-    fn get_neurons_weights(&self) -> Matrix {
-        let mut values: Vec<f64> = vec![];
-        self.neurons
-            .iter()
-            .for_each(|neuron| values.extend(neuron.get_weights().get_values()));
-        return Matrix::new(self.neurons[0].get_weights().get_values().len(), values);
+        return self
+            .calculate_layer_delta(next_layer_delta, next_layer_weights)
+            .transpose()
+            .kronecker_product(prev_layer_values);
     }
 }
 
