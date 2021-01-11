@@ -30,6 +30,10 @@ impl Neuron {
         return &self.weights;
     }
 
+    pub fn get_mutable_weights(&mut self) -> &mut Matrix {
+        return &mut self.weights;
+    }
+
     fn generate_random_weights(
         weights_count: &usize,
         min_weight: &f64,
