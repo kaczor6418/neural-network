@@ -188,6 +188,7 @@ impl Matrix {
     }
 }
 
+mod matrix_clone;
 mod matrix_operators;
 
 #[cfg(test)]
