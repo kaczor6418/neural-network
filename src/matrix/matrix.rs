@@ -55,21 +55,21 @@ impl Matrix {
     }
 
     pub fn kronecker_product(&self, matrix: &Matrix) -> Matrix {
-        let mut product = Matrix::new_zeros_matrix(0, 0);
-        for row_index in 0..self.rows_count {
-            let mut single_level_matrix = Matrix::new_zeros_matrix(0, 0);
-            for column_index in 0..self.columns_count {
-                let component = self[row_index][column_index] * matrix;
-                if single_level_matrix.rows_count == 0 {
-                    single_level_matrix = component;
-                } else {
-                    single_level_matrix = single_level_matrix.join_horizontal(&component);
+        let product_rows = self.rows_count * matrix.rows_count;
+        let product_columns_count = self.columns_count * matrix.columns_count;
+        let mut product = Matrix::new_zeros_matrix(product_rows, product_columns_count);
+        for m2_row_index in 0..matrix.rows_count {
+            for m2_column_index in 0..matrix.columns_count {
+                for m1_row_index in 0..self.rows_count {
+                    for m1_column_index in 0..self.columns_count {
+                        let product_row_index = m2_row_index * self.rows_count + m1_row_index;
+                        let product_column_index =
+                            m2_column_index * self.columns_count + m1_column_index;
+                        product[product_row_index][product_column_index] = self[m1_row_index]
+                            [m1_column_index]
+                            * matrix[m2_row_index][m2_column_index];
+                    }
                 }
-            }
-            if product.rows_count == 0 {
-                product = single_level_matrix;
-            } else {
-                product = product.join_vertical(&single_level_matrix);
             }
         }
         return product;
