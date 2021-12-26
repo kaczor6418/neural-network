@@ -118,6 +118,14 @@ impl Layer {
             .transpose()
             .kronecker_product(prev_layer_values);
     }
+
+    fn get_neurons_weights(&self) -> Matrix {
+        let mut values: Vec<f64> = vec![];
+        self.neurons
+            .iter()
+            .for_each(|neuron| values.extend(neuron.get_weights().get_values()));
+        return Matrix::new(self.neurons[0].get_weights().get_values().len(), values);
+    }
 }
 
 #[cfg(test)]

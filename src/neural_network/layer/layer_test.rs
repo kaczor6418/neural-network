@@ -18,7 +18,7 @@ mod new {
 
     #[test]
     fn should_create_layer_with_3_neurons_with_2_weights() {
-        let layer = Layer::new(layer_config_with_3_neurons(), &2);
+        let layer = Layer::new(layer_config_with_3_neurons(), 2);
         let expected_neurons_count = 3;
         assert_eq!(layer.neurons.len(), expected_neurons_count);
         layer
@@ -35,11 +35,11 @@ mod add_neurons {
 
     #[test]
     fn should_add_two_neurons_to_layer() {
-        let mut layer = Layer::new(layer_config_with_3_neurons(), &2);
+        let mut layer = Layer::new(layer_config_with_3_neurons(), 2);
         let old_neurons_count = layer.neurons.len();
         layer.add_neurons(
             2,
-            &2,
+            2,
             WeightsRange {
                 min_weight: -0.1,
                 max_weight: 0.1,
@@ -55,7 +55,7 @@ mod size {
 
     #[test]
     fn should_have_size_three_for_layer_with_three_neurons() {
-        let layer = Layer::new(layer_config_with_3_neurons(), &2);
+        let layer = Layer::new(layer_config_with_3_neurons(), 2);
         assert_eq!(layer.size(), 3);
     }
 }
@@ -67,7 +67,7 @@ mod calculate_values_and_get_values {
 
     #[test]
     fn should_calculate_and_save_layer_values() {
-        let mut layer = Layer::new(layer_config_with_3_neurons(), &2);
+        let mut layer = Layer::new(layer_config_with_3_neurons(), 2);
         layer
             .neurons
             .iter_mut()
@@ -97,7 +97,7 @@ mod calculate_derivative_values {
 
     #[test]
     fn should_return_values_reduced_by_derivative_of_activation_function() {
-        let mut layer = Layer::new(layer_config_with_3_neurons(), &2);
+        let mut layer = Layer::new(layer_config_with_3_neurons(), 2);
         let input = Matrix::new(2, vec![1.0, 2.0]);
         layer
             .neurons
@@ -122,7 +122,7 @@ mod get_neurons_weights {
 
     #[test]
     fn should_return_all_weights_for_all_neurons() {
-        let layer = Layer::new(layer_config_with_3_neurons(), &3);
+        let layer = Layer::new(layer_config_with_3_neurons(), 3);
         let expected_rows_count = 3;
         let expected_columns_count = 3;
         let all_weights = layer.get_neurons_weights();
@@ -138,7 +138,7 @@ mod calculate_layer_delta {
 
     #[test]
     fn should_hidden_layer_delta() {
-        let mut layer = Layer::new(layer_config_with_3_neurons(), &2);
+        let mut layer = Layer::new(layer_config_with_3_neurons(), 2);
         let input = Matrix::new(2, vec![1.0, 2.0]);
         layer
             .neurons
@@ -168,7 +168,7 @@ mod calculate_wights_delta {
 
     #[test]
     fn should_hidden_layer_weights_delta() {
-        let mut layer = Layer::new(layer_config_with_3_neurons(), &2);
+        let mut layer = Layer::new(layer_config_with_3_neurons(), 2);
         let input = Matrix::new(2, vec![1.0, 2.0]);
         let next_layer_delta = Matrix::new(3, vec![1.0, 2.0, 3.0]);
         let next_layer_weights = Matrix::new(3, vec![1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 3.0, 3.0, 3.0]);
@@ -197,7 +197,7 @@ mod correct_neurons_weight {
 
     #[test]
     fn should_correct_neurons_weights_based_on_weights_delta() {
-        let mut layer = Layer::new(layer_config_with_3_neurons(), &2);
+        let mut layer = Layer::new(layer_config_with_3_neurons(), 2);
         let learning_rate = 0.1;
         let input = Matrix::new(2, vec![1.0, 2.0]);
         let next_layer_delta = Matrix::new(3, vec![1.0, 2.0, 3.0]);
