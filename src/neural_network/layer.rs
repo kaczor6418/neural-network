@@ -12,7 +12,7 @@ pub struct Layer {
 }
 
 impl Layer {
-    pub fn new(config: LayerConfig, inputs_count: usize) -> Layer {
+    pub fn new(config: LayerConfig, inputs_count: &usize) -> Layer {
         let mut layer = Layer {
             activation_function: config
                 .activation_function
@@ -82,13 +82,13 @@ impl Layer {
     fn add_neurons(
         &mut self,
         neurons_count: usize,
-        inputs_count: usize,
+        inputs_count: &usize,
         weights_range: WeightsRange,
     ) {
         let mut i = 0;
         while i < neurons_count {
             self.neurons.push(Neuron::new(
-                &inputs_count,
+                inputs_count,
                 &weights_range.min_weight,
                 &weights_range.max_weight,
             ));

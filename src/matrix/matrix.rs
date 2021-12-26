@@ -1,3 +1,6 @@
+use std::sync::{Arc, Mutex};
+use std::thread;
+
 pub struct Matrix {
     values: Vec<f64>,
     columns_count: usize,
@@ -58,6 +61,27 @@ impl Matrix {
         let product_rows = self.rows_count * matrix.rows_count;
         let product_columns_count = self.columns_count * matrix.columns_count;
         let mut product = Matrix::new_zeros_matrix(product_rows, product_columns_count);
+        for m1_row_index in 0..self.rows_count {
+            for m1_column_index in 0..self.columns_count {
+                for m2_row_index in 0..matrix.rows_count {
+                    for m2_column_index in 0..matrix.columns_count {
+                        let product_row_index = m1_row_index * matrix.rows_count + m2_row_index;
+                        let product_column_index =
+                            m1_column_index * matrix.columns_count + m2_column_index;
+                        product[product_row_index][product_column_index] = self[m1_row_index]
+                            [m1_column_index]
+                            * matrix[m2_row_index][m2_column_index];
+                    }
+                }
+            }
+        }
+        return product;
+    }
+
+    pub fn outer_product(&self, matrix: &Matrix) -> Matrix {
+        let product_rows = self.rows_count * matrix.rows_count;
+        let product_columns_count = self.columns_count * matrix.columns_count;
+        let mut product = Matrix::new_zeros_matrix(product_rows, product_columns_count);
         for m2_row_index in 0..matrix.rows_count {
             for m2_column_index in 0..matrix.columns_count {
                 for m1_row_index in 0..self.rows_count {
@@ -73,6 +97,42 @@ impl Matrix {
             }
         }
         return product;
+    }
+
+    pub fn parallel_kronecker_product(&self, matrix: &Matrix) -> Matrix {
+        let product_rows = self.rows_count * matrix.rows_count;
+        let product_columns_count = self.columns_count * matrix.columns_count;
+        let product = Arc::new(Mutex::new(Matrix::new_zeros_matrix(
+            product_rows,
+            product_columns_count,
+        )));
+        let mut handles = vec![];
+        for m2_row_index in 0..matrix.rows_count {
+            let product = Arc::clone(&product);
+            let matrix_a = self.to_owned();
+            let matrix_b = matrix.to_owned();
+            let handle = thread::spawn(move || {
+                let mut prod = product.lock().unwrap();
+                for m2_column_index in 0..matrix_b.columns_count {
+                    for m1_row_index in 0..matrix_a.rows_count {
+                        for m1_column_index in 0..matrix_a.columns_count {
+                            let product_row_index =
+                                m2_row_index * matrix_a.rows_count + m1_row_index;
+                            let product_column_index =
+                                m2_column_index * matrix_a.columns_count + m1_column_index;
+                            (*prod)[product_row_index][product_column_index] = matrix_a
+                                [m1_row_index][m1_column_index]
+                                * matrix_b[m2_row_index][m2_column_index];
+                        }
+                    }
+                }
+            });
+            handles.push(handle);
+        }
+        for handle in handles {
+            handle.join().unwrap();
+        }
+        return product.lock().unwrap().clone();
     }
 
     pub fn join_horizontal(&self, matrix: &Matrix) -> Matrix {
